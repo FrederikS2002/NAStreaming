@@ -71,16 +71,26 @@
 
 	$: getVolume = () => {
 		if(video){
-			return video.volume;
+			return video.volume * 100;
 		}
 		return 100;
 	}
 
 	const videoVolumeUp = () => {
-		video.volume += 5;
+        if(video.volume + 0.05 <= 1){
+            video.volume += 0.05;
+        }else{
+            video.volume = 1;
+        }
+
 	}
 	const videoVolumeDown = () => {
-		video.volume -= 5;
+        if(video.volume-0.05 >= 0){
+            video.volume -= 0.05;
+        }else{
+            video.volume = 0;
+        }
+
 	}
 	const skipForward = () => {
 		time += 5;
@@ -242,7 +252,10 @@
 					<!-- video, sound, Subtitles, skiptime-->
 				</div>
 			</div>
-			<div class="hover" bind:this={hover}>
+            {#if video}
+                <div class="volume_slider"><input type="range" min="0" max="100" value={video.volume*100} on:change={e => video.volume = e.target.value / 100} /></div>
+            {/if}
+            <div class="hover" bind:this={hover}>
 				<!--TODO:Make responsive -->
 				<time bind:this={time1}>{getTime(time)}</time>
 				<input
@@ -365,5 +378,11 @@
 		top: 0;
 		margin: 2%;
 		color: white;
+	}
+	.volume_slider {
+		position: absolute;
+		z-index: 2;
+		top: 5%;
+		right: 0;
 	}
 </style>
