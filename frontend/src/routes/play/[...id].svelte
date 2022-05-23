@@ -59,8 +59,21 @@
 		}
 		playing = !playing;
 	};
+	$: checkMute = () => {
+		if(video){
+			return video.muted;
+		}
+		return false;
+	}
 	const toggleMute = () => {
 		video.muted = !video.muted;
+	}
+
+	$: getVolume = () => {
+		if(video){
+			return video.volume;
+		}
+		return 100;
 	}
 
 	const videoVolumeUp = () => {
@@ -213,7 +226,17 @@
 				</div>
 			</div>
 			<div class="settings">
-				<div class="sound" />
+				<div class="volume" on:click={toggleMute}>
+					{#if checkMute()}
+						<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+					{:else if getVolume() == 0}
+						<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon></svg>
+					{:else if getVolume() <= 50}
+						<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+					{:else}
+						<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+					{/if}
+				</div>
 				<div class="playback" />
 				<div class="settings_overlay">
 					<!-- video, sound, Subtitles, skiptime-->
@@ -325,6 +348,15 @@
 	time {
 		color: white;
 	}
+	.settings {
+		z-index: 2;
+		position: absolute;
+		display: flex;
+		right: 0;
+		top: 0;
+		margin: 2%;
+		color: white;
+	}
 	.modes {
 		z-index: 2;
 		position: absolute;
@@ -335,4 +367,3 @@
 		color: white;
 	}
 </style>
-
