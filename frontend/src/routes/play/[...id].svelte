@@ -18,17 +18,20 @@
 	let hover;
 	let time1;
 	let time2;
+    let toggleFullscreen;
 	$: calculatePixel = () => {
 		if (hover && time1 && time2) {
 			return hover.clientWidth - (time1.offsetWidth + time2.offsetWidth + 10) + 'px';
 		}
 		return 0;
 	};
+
 	$: if (time >= next_update) {
 		//TODO: PUSH Progress
 		//console.log(time);
 		next_update = time + 5;
 	}
+
 	const checkPiP = () => {
 		try {
 			return 'pictureInPictureEnabled' in document;
@@ -36,6 +39,7 @@
 			return false;
 		}
 	};
+
 	const togglePiP = () => {
 		try {
 			if (video !== document.pictureInPictureElement) {
@@ -47,6 +51,7 @@
 			console.error(error);
 		}
 	};
+
 	const togglePlay = () => {
 		if (playing == true) {
 			video.pause();
@@ -55,17 +60,56 @@
 		}
 		playing = !playing;
 	};
+
 	const skipf = () => {
 		time += 10;
 	};
+
 	const skipb = () => {
 		time -= 10;
 	};
+    function handleKeydown(event) {
+        let key = event.key;
+        switch (key){
+            case "ArrowUp":
+                //TODO:VOLUME
+                break;
+            case "ArrowDown":
+                //TODO:VOLUME
+                break;
+            case "ArrowLeft":
+                skipb();
+                break;
+            case "ArrowRight":
+                skipb();
+                break;
+            case "f":
+                //TODO:Fix Keybind fullscreen
+                //toggleFullscreen();
+                break;
+            case "p":
+                if(checkPiP()){
+                    togglePiP();
+                }
+                break;
+            case "m":
+                //TODO:MUTE
+                break;
+            case " ":
+                togglePlay();
+                break;
+            case "c":
+                //TODO:ToggleCaptions
+                break;
+        }
+        //console.log(key);
+    }
+
 	$: getTime = (time) => {
 		if (isNaN(time)) {
 			time = 0;
 		}
-		var date = new Date(null);
+		let date = new Date(null);
 		date.setSeconds(Math.round(time)); // specify value for SECONDS here
 		let h = date.getHours() - 1;
 		let m = date.getMinutes();
@@ -86,11 +130,12 @@
 		result += m + ':' + s;
 		return result;
 	};
-</script>
 
+</script>
+<svelte:window on:keydown={handleKeydown}/>
 <div class="content">
-	<Fullscreen let:onToggle>
-		<div class="overlay" on:click|self={(e) => (overlay = !overlay)}>
+	<Fullscreen let:onToggle={toggleFullscreen}>
+		<div class="overlay" on:click|self={() => (overlay = !overlay)}>
 			{#if overlay}
 				<div class="skipb" on:click={skipb}><SkipPrevious /></div>
 				<div class="skipf" on:click={skipf}><SkipNext /></div>
@@ -104,8 +149,8 @@
 				{/if}
 			</div>
 
-			<div class="skip left" on:dblclick={skipb} on:click|self={(e) => (overlay = !overlay)} />
-			<div class="skip right" on:click|self={(e) => (overlay = !overlay)} on:dblclick={skipf} />
+			<div class="skip left" on:dblclick={skipb} on:click|self={() => (overlay = !overlay)} />
+			<div class="skip right" on:click|self={() => (overlay = !overlay)} on:dblclick={skipf} />
 			<div class="modes">
 				<div class="back">
 					<svg
@@ -147,9 +192,9 @@
 
 				<div
 					class="fullscreen"
-					on:click={(e) => {
+					on:click={() => {
 						fullscreen = !fullscreen;
-						onToggle();
+						toggleFullscreen();
 					}}
 				>
 					{#if !fullscreen}
