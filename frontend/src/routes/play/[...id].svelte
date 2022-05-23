@@ -28,7 +28,6 @@
 
 	$: if (time >= next_update) {
 		//TODO: PUSH Progress
-		//console.log(time);
 		next_update = time + 5;
 	}
 
@@ -60,28 +59,37 @@
 		}
 		playing = !playing;
 	};
+	const toggleMute = () => {
+		video.muted = !video.muted;
+	}
 
-	const skipf = () => {
-		time += 10;
+	const videoVolumeUp = () => {
+		video.volume += 5;
+	}
+	const videoVolumeDown = () => {
+		video.volume -= 5;
+	}
+	const skipForward = () => {
+		time += 5;
 	};
 
-	const skipb = () => {
-		time -= 10;
+	const skipBackward = () => {
+		time -= 5;
 	};
     function handleKeydown(event) {
         let key = event.key;
         switch (key){
             case "ArrowUp":
-                //TODO:VOLUME
+                videoVolumeUp()
                 break;
             case "ArrowDown":
-                //TODO:VOLUME
+                videoVolumeDown()
                 break;
             case "ArrowLeft":
-                skipb();
+                skipBackward();
                 break;
             case "ArrowRight":
-                skipb();
+                skipForward();
                 break;
             case "f":
                 //TODO:Fix Keybind fullscreen
@@ -93,7 +101,7 @@
                 }
                 break;
             case "m":
-                //TODO:MUTE
+                toggleMute();
                 break;
             case " ":
                 togglePlay();
@@ -137,8 +145,8 @@
 	<Fullscreen let:onToggle={toggleFullscreen}>
 		<div class="overlay" on:click|self={() => (overlay = !overlay)}>
 			{#if overlay}
-				<div class="skipb" on:click={skipb}><SkipPrevious /></div>
-				<div class="skipf" on:click={skipf}><SkipNext /></div>
+				<div class="skipb" on:click={skipBackward}><SkipPrevious /></div>
+				<div class="skipf" on:click={skipForward}><SkipNext /></div>
 			{/if}
 
 			<div class="playpause {overlay ? '' : 'hidden'}" on:click={togglePlay}>
@@ -149,8 +157,8 @@
 				{/if}
 			</div>
 
-			<div class="skip left" on:dblclick={skipb} on:click|self={() => (overlay = !overlay)} />
-			<div class="skip right" on:click|self={() => (overlay = !overlay)} on:dblclick={skipf} />
+			<div class="skip left" on:dblclick={skipBackward} on:click|self={() => (overlay = !overlay)} />
+			<div class="skip right" on:click|self={() => (overlay = !overlay)} on:dblclick={skipForward} />
 			<div class="modes">
 				<div class="back">
 					<svg
@@ -212,6 +220,7 @@
 				</div>
 			</div>
 			<div class="hover" bind:this={hover}>
+				<!--TODO:Make responsive -->
 				<time bind:this={time1}>{getTime(time)}</time>
 				<input
 					type="range"
