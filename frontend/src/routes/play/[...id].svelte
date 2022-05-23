@@ -174,6 +174,100 @@
 			{#if overlay}
 				<div class="skipb" on:click={skipBackward}><SkipPrevious /></div>
 				<div class="skipf" on:click={skipForward}><SkipNext /></div>
+				<div class="modes">
+					<div class="back">
+						<svg
+								stroke="currentColor"
+								fill="currentColor"
+								stroke-width="0"
+								viewBox="0 0 512 512"
+								height="1em"
+								width="1em"
+								xmlns="http://www.w3.org/2000/svg"
+						><path
+								fill="none"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="48"
+								d="M328 112L184 256l144 144"
+						/></svg
+						>
+					</div>
+					{#if checkPiP()}
+						<div class="pip" on:click={togglePiP}>
+							<svg
+									stroke="currentColor"
+									fill="none"
+									stroke-width="0"
+									viewBox="0 0 24 24"
+									height="1em"
+									width="1em"
+									xmlns="http://www.w3.org/2000/svg"
+							><path d="M20 12H14V17H20V12Z" fill="currentColor" /><path
+									fill-rule="evenodd"
+									clip-rule="evenodd"
+									d="M1 6C1 4.89543 1.89543 4 3 4H21C22.1046 4 23 4.89543 23 6V18C23 19.1046 22.1046 20 21 20H3C1.89543 20 1 19.1046 1 18V6ZM3 6H21V18H3L3 6Z"
+									fill="currentColor"
+							/></svg
+							>
+						</div>
+					{/if}
+
+					<div
+							class="fullscreen"
+							on:click={() => {
+						fullscreen = !fullscreen;
+						toggleFullscreen();
+					}}
+					>
+						{#if !fullscreen}
+							<FullscreenIcon />
+						{:else}
+							<FullscreenExitIcon />
+						{/if}
+					</div>
+				</div>
+				<div class="settings">
+					<div class="settings_overlay">
+						<!-- video, sound, Subtitles, skiptime-->
+					</div>
+					<div class="playback" on:click={setPlaybackDefault}>
+						<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M20.38 8.57l-1.23 1.85a8 8 0 01-.22 7.58H5.07A8 8 0 0115.58 6.85l1.85-1.23A10 10 0 003.35 19a2 2 0 001.72 1h13.85a2 2 0 001.74-1 10 10 0 00-.27-10.44zm-9.79 6.84a2 2 0 002.83 0l5.66-8.49-8.49 5.66a2 2 0 000 2.83z"></path></svg>
+					</div>
+					<div class="volume" on:click={toggleMute}>
+						{#if checkMute()}
+							<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+						{:else if getVolume() == 0}
+							<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon></svg>
+						{:else if getVolume() <= 50}
+							<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+						{:else}
+							<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+						{/if}
+					</div>
+
+
+				</div>
+				{#if video}
+					<div class="playback_slider" orient="vertical"><input type="range" min="0.5" max="5" step="0.1" bind:value={video.playbackRate} /></div>
+
+					<div class="volume_slider" orient="vertical"><input type="range" min="0" max="100" value={video.volume*100} on:change={e => video.volume = e.target.value / 100} /></div>
+				{/if}
+				<div class="hover" bind:this={hover}>
+					<!--TODO:Make responsive -->
+					<time bind:this={time1}>{getTime(time)}</time>
+					<input
+							type="range"
+							min="0"
+							max={duration * 1000}
+							style="width: {calculatePixel()}"
+							value={time * 1000}
+							on:input={(e) => (time = e.target.value / 1000)}
+					/>
+					<time bind:this={time2}
+					>{remainingTime ? '-' + getTime(duration - time) : getTime(duration)}</time
+					>
+				</div>
 			{/if}
 
 			<div class="playpause {overlay ? '' : 'hidden'}" on:click={togglePlay}>
@@ -186,100 +280,6 @@
 
 			<div class="skip left" on:dblclick={skipBackward} on:click|self={() => (overlay = !overlay)} />
 			<div class="skip right" on:click|self={() => (overlay = !overlay)} on:dblclick={skipForward} />
-			<div class="modes">
-				<div class="back">
-					<svg
-						stroke="currentColor"
-						fill="currentColor"
-						stroke-width="0"
-						viewBox="0 0 512 512"
-						height="1em"
-						width="1em"
-						xmlns="http://www.w3.org/2000/svg"
-						><path
-							fill="none"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="48"
-							d="M328 112L184 256l144 144"
-						/></svg
-					>
-				</div>
-				{#if checkPiP()}
-					<div class="pip" on:click={togglePiP}>
-						<svg
-							stroke="currentColor"
-							fill="none"
-							stroke-width="0"
-							viewBox="0 0 24 24"
-							height="1em"
-							width="1em"
-							xmlns="http://www.w3.org/2000/svg"
-							><path d="M20 12H14V17H20V12Z" fill="currentColor" /><path
-								fill-rule="evenodd"
-								clip-rule="evenodd"
-								d="M1 6C1 4.89543 1.89543 4 3 4H21C22.1046 4 23 4.89543 23 6V18C23 19.1046 22.1046 20 21 20H3C1.89543 20 1 19.1046 1 18V6ZM3 6H21V18H3L3 6Z"
-								fill="currentColor"
-							/></svg
-						>
-					</div>
-				{/if}
-
-				<div
-					class="fullscreen"
-					on:click={() => {
-						fullscreen = !fullscreen;
-						toggleFullscreen();
-					}}
-				>
-					{#if !fullscreen}
-						<FullscreenIcon />
-					{:else}
-						<FullscreenExitIcon />
-					{/if}
-				</div>
-			</div>
-			<div class="settings">
-				<div class="settings_overlay">
-					<!-- video, sound, Subtitles, skiptime-->
-				</div>
-				<div class="playback" on:click={setPlaybackDefault}>
-					<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M20.38 8.57l-1.23 1.85a8 8 0 01-.22 7.58H5.07A8 8 0 0115.58 6.85l1.85-1.23A10 10 0 003.35 19a2 2 0 001.72 1h13.85a2 2 0 001.74-1 10 10 0 00-.27-10.44zm-9.79 6.84a2 2 0 002.83 0l5.66-8.49-8.49 5.66a2 2 0 000 2.83z"></path></svg>
-				</div>
-				<div class="volume" on:click={toggleMute}>
-					{#if checkMute()}
-						<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
-					{:else if getVolume() == 0}
-						<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon></svg>
-					{:else if getVolume() <= 50}
-						<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
-					{:else}
-						<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
-					{/if}
-				</div>
-
-
-			</div>
-            {#if video}
-				<div class="playback_slider"><input type="range" min="0.5" max="5" step="0.1" bind:value={video.playbackRate} /></div>
-
-				<div class="volume_slider"><input type="range" min="0" max="100" value={video.volume*100} on:change={e => video.volume = e.target.value / 100} /></div>
-            {/if}
-            <div class="hover" bind:this={hover}>
-				<!--TODO:Make responsive -->
-				<time bind:this={time1}>{getTime(time)}</time>
-				<input
-					type="range"
-					min="0"
-					max={duration * 1000}
-					style="width: {calculatePixel()}"
-					value={time * 1000}
-					on:input={(e) => (time = e.target.value / 1000)}
-				/>
-				<time bind:this={time2}
-					>{remainingTime ? '-' + getTime(duration - time) : getTime(duration)}</time
-				>
-			</div>
 		</div>
 
 		<video
@@ -392,13 +392,15 @@
 	.volume_slider {
 		position: absolute;
 		z-index: 2;
-		top: 5%;
+		top: 10%;
 		right: 0;
+		transform: rotate(270deg);
 	}
 	.playback_slider {
 		position: absolute;
 		z-index: 2;
-		top: 7%;
-		right: 0;
+		top: 10%;
+		right: 2%;
+		transform: rotate(270deg);
 	}
 </style>
