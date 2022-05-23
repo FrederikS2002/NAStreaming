@@ -1,5 +1,4 @@
 <script lang="ts">
-	$: playing = false;
 	$: overlay = true;
 	$: fullscreen = false;
 	$: remainingTime = true;
@@ -15,6 +14,7 @@
 	let next_update = 0;
 	let duration;
 	let video;
+	let paused = true;
 	let hover;
 	let time1;
 	let time2;
@@ -38,6 +38,9 @@
 			return false;
 		}
 	};
+	const redirectToNext = () => {
+		//TODO:redirect to next
+	}
 
 	const togglePiP = () => {
 		try {
@@ -52,12 +55,11 @@
 	};
 
 	const togglePlay = () => {
-		if (playing == true) {
-			video.pause();
-		} else {
+		if (paused == true) {
 			video.play();
+		} else {
+			video.pause();
 		}
-		playing = !playing;
 	};
 	$: checkMute = () => {
 		if(video){
@@ -268,10 +270,13 @@
 					>{remainingTime ? '-' + getTime(duration - time) : getTime(duration)}</time
 					>
 				</div>
+				<div class="next_movie" on:click={redirectToNext}>
+					<h1>Next</h1>
+				</div>
 			{/if}
 
 			<div class="playpause {overlay ? '' : 'hidden'}" on:click={togglePlay}>
-				{#if playing}
+				{#if paused == false}
 					<Pause />
 				{:else}
 					<Play />
@@ -287,6 +292,7 @@
 			bind:this={video}
 			bind:currentTime={time}
 			bind:duration
+			bind:paused
 			poster="https://sveltejs.github.io/assets/caminandes-llamigos.jpg"
 		>
 			<source src="https://sveltejs.github.io/assets/caminandes-llamigos.mp4" type="video/mp4" />
@@ -402,5 +408,16 @@
 		top: 10%;
 		right: 2%;
 		transform: rotate(270deg);
+	}
+	.next_movie {
+		position: absolute;
+		z-index: 2;
+		bottom: 10%;
+		right: 0;
+		padding: 2% 5%;
+		color: white;
+		background-color: rgba(80, 80, 80, 0.6);
+		border-radius: 5px 0 0 5px;
+
 	}
 </style>
