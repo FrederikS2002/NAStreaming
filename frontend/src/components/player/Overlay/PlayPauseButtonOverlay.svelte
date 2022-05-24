@@ -6,16 +6,19 @@
     export let overlay;
     let video;
     let paused;
-    const deletet = videoSubscribe(value => {
+
+    videoSubscribe(value => {
         video = value.video;
         paused = value.paused;
     });
+
     $: isPlaying = () => {
         if (paused) {
             return false;
         }
         return true;
     }
+
     const togglePlay = () => {
         if (isPlaying()) {
             video.pause();
