@@ -1,5 +1,5 @@
 use actix_web::{get, web::Path, web::Json, web::Data};
-use super::super::{models, mysql};
+use super::super::models;
 use serde::{Serialize, Deserialize};
 use diesel::MysqlConnection;
 

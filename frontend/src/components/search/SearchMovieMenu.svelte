@@ -1,13 +1,17 @@
 <script lang="ts">
     import MovieCard from "./MovieCard.svelte"; 
-    export let json;
-    console.log(json)
+    export let movies;
 </script>
 
 <div class="movies">
-    {#each json as movie}
-        <MovieCard movie={movie}/> 
-    {/each}
+    {#if movies}
+        {#each movies as movie}
+            <MovieCard movie={movie}/>
+        {/each}
+    {:else}
+        <text>No results</text>
+    {/if}
+    
 </div>
 <style lang="scss">
     .movies {

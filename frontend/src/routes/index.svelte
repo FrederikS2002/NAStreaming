@@ -1,16 +1,20 @@
-<script lang="ts">
-    import SearchMovieMenu from "../components/search/SearchMovieMenu.svelte";
-    let json = [
-		{
-			title: 'Test',
-			uuid: 'test',
-			image_src:
-				'https://www.komar.de/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/4/-/4-4113_star_wars_movie_poster_rey_ma.jpg'
+<script context="module">
+	let backend = 'http://127.0.0.1:8080/search_movie/1/10';
+	export async function load({ fetch }) {
+		const res = await fetch(backend);
+		const data = await res.json();
+		if (res.ok) {
+			return {
+				props: { movies: data }
+			};
 		}
-	];
-    for(let i = 0; i < 50; i++){
-        json.push(json[0]);
-    } 
+	}
 </script>
-<SearchMovieMenu json={json} />
 
+<script lang="ts">
+	import SearchMovieMenu from '../components/search/SearchMovieMenu.svelte';
+	export let movies;
+	console.log(movies);
+</script>
+
+<SearchMovieMenu {movies} />

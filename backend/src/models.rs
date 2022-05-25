@@ -7,6 +7,7 @@ use serde::Serialize;
 pub struct Movie {
     id: i32,
     uuid: String,
+    #[serde(rename = "type")]
     type_: String,
     titles: String,
     categories: String,
@@ -20,11 +21,11 @@ pub struct MovieService<'a> {
 }
 
 impl<'a> MovieService<'a> {
-    pub fn all(&self) -> Result<Vec<Movie>> {
-        use diesel::prelude::*;
-        use super::schema::movies::dsl::movies;
-        Ok(movies.load::<Movie>(self.conn)?)
-    }
+    // pub fn all(&self) -> Result<Vec<Movie>> {
+    //     use diesel::prelude::*;
+    //     use super::schema::movies::dsl::movies;
+    //     Ok(movies.load::<Movie>(self.conn)?)
+    // }
 
     pub fn show(&self, id:i32) -> Result<Movie> {
         use diesel::prelude::*;
@@ -48,19 +49,19 @@ impl<'a> MovieService<'a> {
         return self.show(sq as i32);
     }
 
-    pub fn update(&self, sql_index: i32, req: UpdateMovie) -> Result<Movie> {
-        use diesel::prelude::*;
-        use super::schema::movies::dsl::*;
-        diesel::update(movies.find(sql_index)).set(req).execute(self.conn)?;
-        return self.show(sql_index);
-    }
-
-    pub fn delete(&self, sql_index:i32) -> Result<()> {
-        use diesel::prelude::*;
-        use super::schema::movies::dsl::*;
-        diesel::delete(movies.find(sql_index)).execute(self.conn)?;
-        Ok(())
-    }
+    // pub fn update(&self, sql_index: i32, req: UpdateMovie) -> Result<Movie> {
+    //     use diesel::prelude::*;
+    //     use super::schema::movies::dsl::*;
+    //     diesel::update(movies.find(sql_index)).set(req).execute(self.conn)?;
+    //     return self.show(sql_index);
+    // }
+    //
+    // pub fn delete(&self, sql_index:i32) -> Result<()> {
+    //     use diesel::prelude::*;
+    //     use super::schema::movies::dsl::*;
+    //     diesel::delete(movies.find(sql_index)).execute(self.conn)?;
+    //     Ok(())
+    // }
 }
 
 #[derive(Debug, AsChangeset)]
