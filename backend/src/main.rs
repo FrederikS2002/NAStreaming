@@ -1,6 +1,6 @@
 #[macro_use]
 extern crate diesel;
-use actix_web::{App, HttpServer, middleware::Logger};
+use actix_web::{App, HttpServer, middleware::Logger, web::Data};
 
 mod mysql;
 mod schema;
@@ -16,7 +16,7 @@ async fn main() -> std::io::Result<()> {
         let logger = Logger::default(); 
         App::new()
             .wrap(logger)
-            //.app_data(models::MovieService{conn: &conn})
+            .app_data(Data::new(mysql::establish_connection().unwrap()))
             .service(api::test::search_movie_empty)
             .service(api::test::search_movie)
     })

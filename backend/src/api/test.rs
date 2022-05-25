@@ -1,7 +1,7 @@
-use actix_web::{get, web::Path, web::Json};
-use diesel::{MysqlConnection};
+use actix_web::{get, web::Path, web::Json, web::Data};
 use super::super::{models, mysql};
 use serde::{Serialize, Deserialize};
+use diesel::MysqlConnection;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct SearchIdentifier {
@@ -45,15 +45,13 @@ impl EmptySerach {
 }
 
 #[get("/search_movie/{query}/{page}/{limit}")]
-pub async fn search_movie(search_identifier: Path<SearchIdentifier>) -> Json<Vec<models::Movie>> {
-    let conn: MysqlConnection = mysql::establish_connection().unwrap();
+pub async fn search_movie(search_identifier: Path<SearchIdentifier>, conn: Data<MysqlConnection>) -> Json<Vec<models::Movie>> {
     let testing = super::super::models::MovieService{conn: &conn}; 
     return Json(testing.show_page(&search_identifier.get_query(), search_identifier.get_page(), search_identifier.get_limit()).unwrap());
 }
 
 #[get("/search_movie/{page}/{limit}")]
-pub async fn search_movie_empty(search_identifier: Path<EmptySerach>) -> Json<Vec<models::Movie>> {
-    let conn: MysqlConnection = mysql::establish_connection().unwrap();
+pub async fn search_movie_empty(search_identifier: Path<EmptySerach>, conn: Data<MysqlConnection>) -> Json<Vec<models::Movie>> {
     let testing = super::super::models::MovieService{conn: &conn};
     return Json(testing.show_page("", search_identifier.get_page(), search_identifier.get_limit()).unwrap());
 }
