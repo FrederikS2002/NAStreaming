@@ -5,6 +5,5 @@ CREATE TABLE IF NOT EXISTS `movies` (
     `titles` TEXT NOT NULL ,
     `categories` TEXT NOT NULL , 
     `age_restriction` INT NOT NULL ,
-    `img_src` TEXT NOT NULL ,  
     PRIMARY KEY (`id`));
 

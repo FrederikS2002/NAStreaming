@@ -12,8 +12,6 @@ pub struct Movie {
     titles: String,
     categories: String,
     age_restriction: i32,
-    img_src: String,
-
 }
 
 pub struct MovieService<'a> {
@@ -49,12 +47,33 @@ impl<'a> MovieService<'a> {
         return self.show(sq as i32);
     }
 
-    // pub fn update(&self, sql_index: i32, req: UpdateMovie) -> Result<Movie> {
-    //     use diesel::prelude::*;
-    //     use super::schema::movies::dsl::*;
-    //     diesel::update(movies.find(sql_index)).set(req).execute(self.conn)?;
-    //     return self.show(sql_index);
-    // }
+    pub fn updateMovieType(&self, sql_index: i32, req: UpdateMovieType) -> Result<Movie> {
+        use diesel::prelude::*;
+        use super::schema::movies::dsl::*;
+        diesel::update(movies.find(sql_index)).set(req).execute(self.conn)?;
+        return self.show(sql_index);
+    }
+
+    pub fn UpdateMovieTitles(&self, sql_index: i32, req: UpdateMovieTitles) -> Result<Movie> {
+        use diesel::prelude::*;
+        use super::schema::movies::dsl::*;
+        diesel::update(movies.find(sql_index)).set(req).execute(self.conn)?;
+        return self.show(sql_index);
+    }
+
+    pub fn UpdateMovieCategories(&self, sql_index: i32, req: UpdateMovieCategory) -> Result<Movie> {
+        use diesel::prelude::*;
+        use super::schema::movies::dsl::*;
+        diesel::update(movies.find(sql_index)).set(req).execute(self.conn)?;
+        return self.show(sql_index);
+    }
+
+    pub fn updateMovieAge(&self, sql_index: i32, req: UpdateMovieAge) -> Result<Movie> {
+        use diesel::prelude::*;
+        use super::schema::movies::dsl::*;
+        diesel::update(movies.find(sql_index)).set(req).execute(self.conn)?;
+        return self.show(sql_index);
+    }
     //
     // pub fn delete(&self, sql_index:i32) -> Result<()> {
     //     use diesel::prelude::*;
@@ -66,10 +85,25 @@ impl<'a> MovieService<'a> {
 
 #[derive(Debug, AsChangeset)]
 #[table_name="movies"]
-pub struct UpdateMovie {
-    type_: String,
+pub struct UpdateMovieType {
+    type_: String, 
+}
+
+#[derive(Debug, AsChangeset)]
+#[table_name="movies"]
+pub struct UpdateMovieTitles {
     titles: String,
+}
+
+#[derive(Debug, AsChangeset)]
+#[table_name="movies"]
+pub struct UpdateMovieCategory {
     categories: String,
+}
+
+#[derive(Debug, AsChangeset)]
+#[table_name="movies"]
+pub struct UpdateMovieAge {
     age_restriction: i32,
 }
 
@@ -81,6 +115,4 @@ pub struct NewMovie {
     pub titles: String,
     pub categories: String,
     pub age_restriction: i32,
-    pub img_src: String,
-
 }

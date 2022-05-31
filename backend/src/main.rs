@@ -14,13 +14,14 @@ async fn main() -> std::io::Result<()> {
     std::env::set_var("RUST_BACKTRACE", "1");
     env_logger::init();
     HttpServer::new( || {
-        let logger = Logger::default(); 
+        let logger = Logger::default();
         App::new()
             .wrap(logger)
             .wrap(Cors::permissive())
             .app_data(Data::new(mysql::establish_connection().unwrap()))
             .service(api::test::search_movie_empty)
             .service(api::test::search_movie)
+            .service(api::test::route_function_example)
     })
     .bind(("127.0.0.1", 8080))?
     .run()

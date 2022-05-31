@@ -42,7 +42,6 @@ table! {
         titles -> Text,
         categories -> Text,
         age_restriction -> Integer,
-        img_src -> Text,
     }
 }
 
