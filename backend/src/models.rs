@@ -74,7 +74,7 @@ impl<'a> MovieService<'a> {
         diesel::update(movies.find(sql_index)).set(req).execute(self.conn)?;
         return self.show(sql_index);
     }
-    //
+    
     // pub fn delete(&self, sql_index:i32) -> Result<()> {
     //     use diesel::prelude::*;
     //     use super::schema::movies::dsl::*;
