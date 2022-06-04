@@ -62,7 +62,34 @@ pub async fn search_movie_empty(search_identifier: Path<EmptySerach>, conn: Data
     let testing = super::super::models::MovieService{conn: &conn};
     return Json(testing.show_page("", search_identifier.get_page(), search_identifier.get_limit()).unwrap());
 }
-
+#[post("upload_episodes")]
+async fn upload_episodes(mut payload: Multipart, conn: Data<MysqlConnection>) -> Json<String> {
+    let mut fileupload = false;
+    while let Some(item) = payload.next().await {
+        let mut field = match item {
+            Ok(value) => value, 
+            Err(_) => return Json("Couldn't parse form".to_string())
+        }; 
+        match get_content_type(&field).as_str() {
+            "video/mp4" => {
+                if get_name(&field) == "file" {
+                    let filepath = format!("static/covers/{}.mp4", get_filename(&field).unwrap());
+                    match create_file(field, filepath).await {
+                        Ok(_) => fileupload = true,
+                        Err(err) => return Json(err)
+                    }
+                }else {
+                    return Json("Invalid input".to_string());
+                }
+            }
+            _ => {
+                println!("type: {}", get_content_type(&field));
+            }
+        }
+ 
+    }
+    return Json("200".to_string());
+}
 #[post("upload")]
 async fn route_function_example(mut payload: Multipart, conn: Data<MysqlConnection>) -> Json<String> {
     //TODO: figure out to drop payload early to prevent error messages
@@ -115,13 +142,13 @@ async fn route_function_example(mut payload: Multipart, conn: Data<MysqlConnecti
                                 if value.parse::<i32>().is_ok() {
                                     Some(value.parse::<i32>().unwrap())
                                 }else {
-                                    return Json("Invalid input".to_string())
+                                    return Json("Invalid inpu".to_string())
                                 }
                             },
                             Err(err) => return Json(err.to_string())
                         }
                     }
-                    _ => return Json("Invalid input".to_string())
+                    _ => return Json(format!("Invalid input: {}", get_name(&field)))
                 }
             }
             _ => {
@@ -131,7 +158,6 @@ async fn route_function_example(mut payload: Multipart, conn: Data<MysqlConnecti
             
         }
     }
-
     if fileupload && matches!(&titles, Some(_value)) && matches!(&type_, Some(_value)) && matches!(&categories, Some(_value)) && matches!(age_restriction, Some(_value)) {
         let testing = super::super::models::MovieService{conn: &conn};
         match testing.add(NewMovie { uuid, type_: type_.unwrap(), titles: titles.unwrap(), categories:categories.unwrap(), age_restriction: age_restriction.unwrap(), }){

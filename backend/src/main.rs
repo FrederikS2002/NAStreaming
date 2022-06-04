@@ -37,6 +37,7 @@ async fn main() -> std::io::Result<()> {
             .service(api::test::search_movie_empty)
             .service(api::test::search_movie)
             .service(api::test::route_function_example)
+            .service(api::test::upload_episodes)
     })
     .bind(("127.0.0.1", 8080))?
     .run()

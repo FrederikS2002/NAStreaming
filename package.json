@@ -7,7 +7,7 @@
   "license": "ISC",
   "scripts": {
     "dev": "concurrently --kill-others \"npm run dev:fe\" \"npm run dev:be\"",
-    "dev:fe": "cd frontend && npm run dev",
+    "dev:fe": "cd frontend && npm run dev - --host",
     "dev:be": "cd backend && npm run dev",
     "build": "concurrently --kill-others \"npm run build:fe\" \"npm run build:be\"",
     "build:fe": "cd frontend && npm run build",

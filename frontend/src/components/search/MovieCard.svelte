@@ -3,7 +3,7 @@
 </script>
 
 <a sveltekit:noscroll sveltekit:prefetch href={"/info/"+movie.uuid}><div class="card">
-	<img src={movie.img_src} alt="Image" />
+	<img src={"http://127.0.0.1:8080/covers/"+movie.uuid+".jpeg"} alt="Image" />
 	<div class="title">
 		<h1>{movie.titles}</h1>
 	</div>

@@ -1,12 +1,10 @@
 import { writable } from 'svelte/store';
-import { onDestroy } from "svelte";
 type test = {
 	video: null | HTMLVideoElement;
 	duration: number;
 	currentTime: number;
 	paused: boolean;
 };
-let paused = true;
 
 const {subscribe, set, update} = writable<test>({
 	video: null,
