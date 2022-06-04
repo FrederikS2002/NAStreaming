@@ -47,33 +47,33 @@ impl<'a> MovieService<'a> {
         return self.show(sq as i32);
     }
 
-    pub fn updateMovieType(&self, sql_index: i32, req: UpdateMovieType) -> Result<Movie> {
-        use diesel::prelude::*;
-        use super::schema::movies::dsl::*;
-        diesel::update(movies.find(sql_index)).set(req).execute(self.conn)?;
-        return self.show(sql_index);
-    }
-
-    pub fn UpdateMovieTitles(&self, sql_index: i32, req: UpdateMovieTitles) -> Result<Movie> {
-        use diesel::prelude::*;
-        use super::schema::movies::dsl::*;
-        diesel::update(movies.find(sql_index)).set(req).execute(self.conn)?;
-        return self.show(sql_index);
-    }
-
-    pub fn UpdateMovieCategories(&self, sql_index: i32, req: UpdateMovieCategory) -> Result<Movie> {
-        use diesel::prelude::*;
-        use super::schema::movies::dsl::*;
-        diesel::update(movies.find(sql_index)).set(req).execute(self.conn)?;
-        return self.show(sql_index);
-    }
-
-    pub fn updateMovieAge(&self, sql_index: i32, req: UpdateMovieAge) -> Result<Movie> {
-        use diesel::prelude::*;
-        use super::schema::movies::dsl::*;
-        diesel::update(movies.find(sql_index)).set(req).execute(self.conn)?;
-        return self.show(sql_index);
-    }
+    // pub fn update_movie_type(&self, sql_index: i32, req: UpdateMovieType) -> Result<Movie> {
+    //     use diesel::prelude::*;
+    //     use super::schema::movies::dsl::*;
+    //     diesel::update(movies.find(sql_index)).set(req).execute(self.conn)?;
+    //     return self.show(sql_index);
+    // }
+    //
+    // pub fn update_movie_titles(&self, sql_index: i32, req: UpdateMovieTitles) -> Result<Movie> {
+    //     use diesel::prelude::*;
+    //     use super::schema::movies::dsl::*;
+    //     diesel::update(movies.find(sql_index)).set(req).execute(self.conn)?;
+    //     return self.show(sql_index);
+    // }
+    //
+    // pub fn update_movie_categories(&self, sql_index: i32, req: UpdateMovieCategory) -> Result<Movie> {
+    //     use diesel::prelude::*;
+    //     use super::schema::movies::dsl::*;
+    //     diesel::update(movies.find(sql_index)).set(req).execute(self.conn)?;
+    //     return self.show(sql_index);
+    // }
+    //
+    // pub fn update_movie_age(&self, sql_index: i32, req: UpdateMovieAge) -> Result<Movie> {
+    //     use diesel::prelude::*;
+    //     use super::schema::movies::dsl::*;
+    //     diesel::update(movies.find(sql_index)).set(req).execute(self.conn)?;
+    //     return self.show(sql_index);
+    // }
     
     // pub fn delete(&self, sql_index:i32) -> Result<()> {
     //     use diesel::prelude::*;

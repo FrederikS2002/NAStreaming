@@ -8,6 +8,7 @@ mod mysql;
 mod schema;
 mod models;
 mod api;
+mod handle_field;
 
 async fn covers(req: HttpRequest) -> Result<NamedFile> {
     let mut path = PathBuf::from(format!("static/covers/{}", req.match_info().query("filename")));
@@ -34,12 +35,13 @@ async fn main() -> std::io::Result<()> {
             .wrap(Cors::permissive())
             .route("/covers/{filename:.*}", get().to(covers))
             .app_data(Data::new(mysql::establish_connection().unwrap()))
-            .service(api::test::search_movie_empty)
-            .service(api::test::search_movie)
-            .service(api::test::route_function_example)
-            .service(api::test::upload_episodes)
+            .service(api::movie_db::search_movie_empty)
+            .service(api::movie_db::search_movie)
+            .service(api::movie_db::create_movie)
+            .service(api::movie_loc_db::upload_episodes)
     })
     .bind(("127.0.0.1", 8080))?
+    .bind(("192.168.178.5", 8080))?
     .run()
     .await
 }
