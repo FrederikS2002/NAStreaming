@@ -13,7 +13,7 @@ export async function makeRequest() {
     if(type_) data.append('type', type_);
     if(age_restriction) data.append('age_restriction', age_restriction);
     if(cover && cover[0]) data.append('cover', cover[0], "test.jpeg");
-    fetch("http://127.0.0.1:8080/upload", {
+    fetch("http://127.0.0.1:8080/create_movie", {
         method: "post",
         //make sure to serialize your JSON body
         body: data,

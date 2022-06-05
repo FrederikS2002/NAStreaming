@@ -51,13 +51,13 @@ impl EmptySerach {
 }
 
 #[get("/search_movie/{query}/{page}/{limit}")]
-pub async fn search_movie(search_identifier: Path<SearchIdentifier>, conn: Data<MysqlConnection>) -> Json<Vec<models::Movie>> {
+async fn search_movie(search_identifier: Path<SearchIdentifier>, conn: Data<MysqlConnection>) -> Json<Vec<models::Movie>> {
     let testing = super::super::models::MovieService{conn: &conn}; 
     return Json(testing.show_page(&search_identifier.get_query(), search_identifier.get_page(), search_identifier.get_limit()).unwrap());
 }
 
 #[get("/search_movie/{page}/{limit}")]
-pub async fn search_movie_empty(search_identifier: Path<EmptySerach>, conn: Data<MysqlConnection>) -> Json<Vec<models::Movie>> {
+async fn search_movie_empty(search_identifier: Path<EmptySerach>, conn: Data<MysqlConnection>) -> Json<Vec<models::Movie>> {
     let testing = super::super::models::MovieService{conn: &conn};
     return Json(testing.show_page("", search_identifier.get_page(), search_identifier.get_limit()).unwrap());
 }
@@ -69,7 +69,7 @@ async fn create_movie(mut payload: Multipart, conn: Data<MysqlConnection>) -> Js
     let mut type_ = None;
     let mut categories = None;
     let mut titles = None;
-    let mut age_restriction = None;
+    let mut age_restriction = 0;
     let mut fileupload = false;
 
     while let Some(item) = payload.next().await {
@@ -113,7 +113,7 @@ async fn create_movie(mut payload: Multipart, conn: Data<MysqlConnection>) -> Js
                         age_restriction = match extract_text(field).await {
                             Ok(value) => {
                                 if value.parse::<i32>().is_ok() {
-                                    Some(value.parse::<i32>().unwrap())
+                                    value.parse::<i32>().unwrap()
                                 }else {
                                     return Json("Invalid inpu".to_string())
                                 }
@@ -132,9 +132,9 @@ async fn create_movie(mut payload: Multipart, conn: Data<MysqlConnection>) -> Js
         }
     }
 
-    if fileupload && matches!(&titles, Some(_value)) && matches!(&type_, Some(_value)) && matches!(&categories, Some(_value)) && matches!(age_restriction, Some(_value)) {
+    if fileupload && matches!(&titles, Some(_value)) && matches!(&type_, Some(_value)) && matches!(&categories, Some(_value)) {
         let testing = super::super::models::MovieService{conn: &conn};
-        match testing.add(NewMovie { uuid, type_: type_.unwrap(), titles: titles.unwrap(), categories:categories.unwrap(), age_restriction: age_restriction.unwrap(), }){
+        match testing.add(NewMovie { uuid, type_: type_.unwrap(), titles: titles.unwrap(), categories:categories.unwrap(), age_restriction, }){
             Ok(_) => return Json("200".to_string()),
             Err(err) => return Json(err.to_string())
         }

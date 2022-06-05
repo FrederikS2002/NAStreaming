@@ -2,9 +2,10 @@ table! {
     movie_filelocations (id) {
         id -> Integer,
         uuid -> Text,
+        movie -> Text,
         epi -> Text,
         name -> Text,
-        location -> Text,
+        filename -> Text,
     }
 }
 

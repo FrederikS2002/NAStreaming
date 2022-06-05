@@ -6,7 +6,7 @@ yarn-debug.log*
 yarn-error.log*
 
 .idea
-backend/ssl
-backend/ssl
-backend/ssl
+backend/static/movies
+backend/static/covers
+
 backend/target

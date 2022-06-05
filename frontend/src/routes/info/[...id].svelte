@@ -1,19 +1,13 @@
 <script lang="ts">
-    type test = {
-        uuid: string,
-        title: string,
-        epi: number
-        time: string,
-        img_src: string,
-        file: null | File,
-    }
+    import { page } from '$app/stores';
     import Episode from "../../components/info/Episode.svelte";
     import HiddenEpisode from "../../components/info/HiddenEpisode.svelte";
     import { addNew, changeTime, epi_sub } from "../../components/info/stores/episodes_store";
     import axios from "axios";
+
     let array:any[] = [];
     epi_sub((value:any[]) => array = value);
-    let movie;
+    let movie = $page.params.id;
     let files;
     const orderChanges = async () => {
 
@@ -49,7 +43,7 @@
         }
     }
     const startUpload = async () => {
-        orderChanges();
+        //orderChanges();
         for (let i = 0; i < array.length; i++) {
             if (array[i].epi == null && array[i].file) {
                 await uploadMovie(movie, array[i].file, (i + 1));
@@ -58,12 +52,14 @@
     }
     const uploadMovie = async (movie: string, file: File, epi: number) => {
         let data = new FormData();
+        data.append('movie', movie);
+        data.append('epi', epi.toString());
         data.append('file', file);
         const options = {
             onUploadProgress: (progressEvent) => {
                 const {loaded, total} = progressEvent;
                 let percent = Math.floor((loaded * 100) / total)
-                changeTime(percent.toString()+"/100", epi - 1)
+                changeTime(percent.toString() + "/100", epi - 1)
             }
         }
 

@@ -14,6 +14,16 @@ pub struct Movie {
     age_restriction: i32,
 }
 
+#[derive(Queryable, Debug, Serialize)]
+pub struct MovieFileLoation {
+    id: i32,
+    uuid: String,
+    movie: String,
+    epi: String,
+    name: String,
+    filename: String,
+}
+
 pub struct MovieService<'a> {
     pub conn: &'a MysqlConnection
 }
@@ -83,6 +93,39 @@ impl<'a> MovieService<'a> {
     // }
 }
 
+pub struct MovieFileLoationService<'a> {
+    pub conn: &'a MysqlConnection
+}
+
+impl<'a> MovieFileLoationService<'a> {
+    // pub fn all(&self) -> Result<Vec<Movie>> {
+    //     use diesel::prelude::*;
+    //     use super::schema::movies::dsl::movies;
+    //     Ok(movies.load::<Movie>(self.conn)?)
+    // }
+
+    pub fn show(&self, id:i32) -> Result<MovieFileLoation> {
+        use diesel::prelude::*;
+        use super::schema::movie_filelocations::dsl::movie_filelocations;
+        let movie: MovieFileLoation = movie_filelocations.find(id).first(self.conn)?;
+        Ok(movie)
+    }
+
+    pub fn delete(&self, sql_index:i32) -> Result<()> {
+        use diesel::prelude::*;
+        use super::schema::movie_filelocations::dsl::*;
+        diesel::delete(movie_filelocations.find(sql_index)).execute(self.conn)?;
+        Ok(())
+    }
+
+    pub fn add(&self, req: NewMovieFileLoation) -> Result<MovieFileLoation> {
+        use diesel::prelude::*;
+        use super::schema::movie_filelocations::table;
+
+        let sq = diesel::insert_into(table).values(req).execute(self.conn)?;
+        return self.show(sq as i32);
+    }
+}
 #[derive(Debug, AsChangeset)]
 #[table_name="movies"]
 pub struct UpdateMovieType {
@@ -115,4 +158,14 @@ pub struct NewMovie {
     pub titles: String,
     pub categories: String,
     pub age_restriction: i32,
+}
+
+#[derive(Insertable, Debug)]
+#[table_name="movie_filelocations"]
+pub struct NewMovieFileLoation {
+    pub uuid: String,
+    pub movie: String,
+    pub epi: String,
+    pub name: String,
+    pub filename: String,
 }

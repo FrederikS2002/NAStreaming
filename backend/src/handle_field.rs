@@ -4,7 +4,7 @@ use actix_web::web::block;
 use actix_multipart::Field;
 use futures_util::stream::StreamExt as _;
 
-pub async fn create_file(mut field: Field, filepath: String) -> Result<(), String> {
+pub async fn create_file(mut field: Field, filepath: String) -> Result<(), String> { 
     if std::path::Path::new(&filepath).exists() {
         return Err("file exists".to_string());
     }
@@ -35,7 +35,7 @@ pub fn get_name(field: &Field) -> String {
 
 pub fn get_filename(field: &Field) -> Result<String, ()> {
     match field.content_disposition().get_filename() {
-        Some(filename) => return Ok(filename.replace(' ', "_").to_string()),
+        Some(filename) => return Ok(filename.replace(' ', "-").to_string()),
         None => return Err(()),
     }; 
 }
