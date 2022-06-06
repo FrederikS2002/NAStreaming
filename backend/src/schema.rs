@@ -3,7 +3,7 @@ table! {
         id -> Integer,
         uuid -> Text,
         movie -> Text,
-        epi -> Text,
+        epi -> Integer,
         name -> Text,
         filename -> Text,
     }
@@ -13,7 +13,6 @@ table! {
     movie_progress (id) {
         id -> Integer,
         uuid -> Text,
-        epi -> Text,
         progress -> Integer,
         user -> Text,
     }
