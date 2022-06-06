@@ -1,7 +1,7 @@
 use actix_web::{get, post, web::Json};
 use serde::Deserialize;
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 struct UpdateProgress {
     user: String,
     episode: String,

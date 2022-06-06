@@ -44,7 +44,7 @@ impl<'a> MovieProgressService<'a> {
         }
     }
 
-    pub fn get(&self, uuid: String, user: String) -> Result<MovieProgress> {
+    pub fn get(&self, uuid: String, user: String) -> Result<Vec<MovieProgress>> {
         use crate::schema::movie_progress::dsl::{movie_progress, uuid};
         Ok(movie_progress
             .filter(uuid.eq(user))

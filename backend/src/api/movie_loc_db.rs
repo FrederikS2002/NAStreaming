@@ -8,14 +8,13 @@ use actix_web::{post, web::Data, web::Json};
 use futures_util::stream::StreamExt as _;
 use std::fs::remove_file;
 use uuid::Uuid;
-
 #[post("upload_episodes")]
 async fn upload_episodes(mut payload: Multipart, services: Data<Services>) -> Json<String> {
     let uuid = Uuid::new_v4().to_string();
     let mut name = "".to_string();
     let mut fileupload = false;
     let mut movie = None;
-    let mut epi = None;
+    let mut epi = 0;
     let mut filename = None;
     let mut filepath = None;
 
@@ -62,7 +61,13 @@ async fn upload_episodes(mut payload: Multipart, services: Data<Services>) -> Js
                 }
                 "epi" => {
                     epi = match extract_text(field).await {
-                        Ok(value) => Some(value),
+                        Ok(value) => {
+                            if value.parse::<i32>().is_ok() {
+                                value.parse::<i32>().unwrap()
+                            } else {
+                                return Json("Invalid inpu".to_string());
+                            }
+                        }
                         Err(err) => return Json(err.to_string()),
                     }
                 }
@@ -84,17 +89,17 @@ async fn upload_episodes(mut payload: Multipart, services: Data<Services>) -> Js
     }
 
     if fileupload
-        && matches!(&epi, Some(_value))
+        && epi != 0
         && matches!(&movie, Some(_value))
         && matches!(&filename, Some(_value))
     {
         //TODO: Delete file on error db error
         match services
-            .movie_filelocation_service
+            .get_movie_filelocation_service()
             .add(NewMovieFileLoation {
                 uuid,
                 movie: movie.unwrap(),
-                epi: epi.unwrap(),
+                epi,
                 name,
                 filename: filename.unwrap(),
             }) {

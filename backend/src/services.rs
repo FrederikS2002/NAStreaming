@@ -14,27 +14,31 @@ pub fn check_hashmap(services: Data<Services>) {
         let mut interval = time::interval(Duration::from_secs(10));
         loop {
             interval.tick().await;
-            services.check_progress_age(5);
+            // services.check_progress_age(5);
         }
     });
 }
 
-pub struct Services<'a> {
-    movie_service: MovieService<'a>,
-    movie_filelocation_service: MovieFileLoationService<'a>,
+pub struct Services {
+    conn: MysqlConnection,
     progress_hashmap: HashMap<String, MovieProgress>,
 }
 
-impl<'a> Services<'a> {
-    pub fn new(conn: &'a MysqlConnection) -> Self {
-        let movie_service = MovieService { conn: &conn };
-        let movie_filelocation_service = MovieFileLoationService { conn: &conn };
+impl Services {
+    pub fn new(conn: MysqlConnection) -> Self {
         let progress_hashmap = HashMap::new();
         Self {
-            movie_service,
-            movie_filelocation_service,
+            conn,
             progress_hashmap,
         }
+    }
+
+    pub fn get_movie_service(&self) -> MovieService {
+        return MovieService { conn: &self.conn}
+    }
+
+    pub fn get_movie_filelocation_service(&self) -> MovieFileLoationService {
+        return MovieFileLoationService { conn: &self.conn }
     }
 
     pub fn update(&mut self, user: String, episode: String, time: u64) -> () {

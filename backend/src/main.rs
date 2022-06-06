@@ -7,7 +7,6 @@ use actix_web::{
     web::{get, Data},
     App, HttpRequest, HttpServer, Result,
 };
-use diesel::MysqlConnection;
 use std::path::PathBuf;
 
 mod api;
@@ -38,18 +37,16 @@ async fn main() -> std::io::Result<()> {
     std::env::set_var("RUST_LOG", "debug");
     std::env::set_var("RUST_BACKTRACE", "1");
     env_logger::init();
+
     HttpServer::new(|| {
         let logger = Logger::default();
+
         App::new()
             .wrap(logger)
             .wrap(Cors::permissive())
             .route("/covers/{filename:.*}", get().to(covers))
-            .app_data(Data::new({
-                //TODO: Fix this
-                static conn: MysqlConnection = mysql::establish_connection().unwrap();
-                services::Services::new(&conn)
-            }))
-            .service(services::check_hashmap)
+            .app_data(Data::new(services::Services::new(mysql::establish_connection().unwrap())))
+            // .service(services::check_hashmap)
             .service(api::movie_db::search_movie_empty)
             .service(api::movie_db::search_movie)
             .service(api::movie_db::create_movie)

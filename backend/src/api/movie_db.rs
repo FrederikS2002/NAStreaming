@@ -55,7 +55,7 @@ async fn search_movie(
 ) -> Json<Vec<Movie>> {
     return Json(
         services
-            .movie_service
+            .get_movie_service()
             .show_page(
                 &search_identifier.get_query(),
                 search_identifier.get_page(),
@@ -72,7 +72,7 @@ async fn search_movie_empty(
 ) -> Json<Vec<Movie>> {
     return Json(
         services
-            .movie_service
+            .get_movie_service()
             .show_page(
                 "",
                 search_identifier.get_page(),
@@ -154,7 +154,7 @@ async fn create_movie(mut payload: Multipart, services: Data<Services>) -> Json<
         && matches!(&type_, Some(_value))
         && matches!(&categories, Some(_value))
     {
-        match services.movie_service.add(NewMovie {
+        match services.get_movie_service().add(NewMovie {
             uuid,
             type_: type_.unwrap(),
             titles: titles.unwrap(),

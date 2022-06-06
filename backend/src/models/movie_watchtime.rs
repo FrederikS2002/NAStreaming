@@ -18,7 +18,7 @@ impl<'a> MovieWatchtimeService<'a> {
     pub fn update(&self, userl: String, watchtime: i32) -> bool {
         use crate::schema::movie_watchtime::{dsl::movie_watchtime, dsl::user, table};
         match movie_watchtime
-            .filter(user.eq(userl))
+            .filter(user.eq(&userl))
             .limit(1)
             .load::<MovieWatchtime>(self.conn)
         {
