@@ -1,9 +1,8 @@
 <script lang="ts">
     import { page } from '$app/stores';
-    import Episode from "../../components/info/Episode.svelte";
-    import HiddenEpisode from "../../components/info/HiddenEpisode.svelte";
     import { addNew, changeTime, epi_sub } from "../../components/info/stores/episodes_store";
     import axios from "axios";
+    import url from "../../components/urls";
 
     let array:any[] = [];
     epi_sub((value:any[]) => array = value);
@@ -19,7 +18,7 @@
         }
         let data = new FormData();
         data.append("order", results.join(","));
-        const res = await fetch("http://127.0.0.1:8080/upload_order", {
+        const res = await fetch(`${url}/upload_order`, {
             method: "post",
             //make sure to serialize your JSON body
             body: data,
@@ -62,19 +61,36 @@
                 changeTime(percent.toString() + "/100", epi - 1)
             }
         }
-
-        let res = await axios.post("http://127.0.0.1:8080/upload_episodes", data, options);
+        let res = await axios.post(`${url}/upload_episodes`, data, options);
         return res;
     }
 </script>
-<a sveltekit:prefetch sveltekit:noscroll href="/">Back</a>
-<button on:click={async e => await startUpload()}>say</button>
-<div on:dragover={(ev) => { ev.preventDefault() }} on:drop={e => onDropFile(e)} class="uplaodcontainer">
-    {#each array as epi, index}
-        <Episode epi={index} title={epi.title} image={epi.img_src} time={epi.time}/>
-    {/each}
-    <HiddenEpisode epi={array.length} />
 
+<script context="module">
+    import url from "../../components/urls"
+
+    export async function load({fetch, params}) {
+        const id = params.id;
+        let backend = `${url}/movie_detail/${id}`;
+
+        const res = await fetch(backend);
+        const data = await res.json();
+        if (res.ok) {
+            return {
+                props: {movies: data}
+            };
+        }
+    }
+</script>
+
+<div class="container">
+    <div>text</div>
+    <!--    <div on:dragover={(ev) => { ev.preventDefault() }} on:drop={e => onDropFile(e)} class="uplaodcontainer">-->
+    <!--        {#each array as epi, index}-->
+    <!--            <Episode epi={index} title={epi.title} image={epi.img_src} time={epi.time}/>-->
+    <!--        {/each}-->
+    <!--        <HiddenEpisode epi={array.length} />-->
+    <!--    </div>-->
 </div>
 
 <style lang="scss">

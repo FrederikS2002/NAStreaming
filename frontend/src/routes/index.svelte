@@ -1,5 +1,6 @@
 <script context="module">
-	let backend = 'http://127.0.0.1:8080/search_movie/1/10';
+    import url from "../components/urls"
+    let backend = url+'/search_movie/1/10';
 	export async function load({ fetch }) {
 		const res = await fetch(backend);
 		const data = await res.json();

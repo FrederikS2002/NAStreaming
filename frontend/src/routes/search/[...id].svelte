@@ -1,4 +1,5 @@
 <script context="module">
+    import url from "../../components/urls"
 	export async function load({ fetch, params }) {
         const ids = params.id;
         if(ids.split('/').length > 1) {
@@ -6,9 +7,9 @@
         }
         let backend;
         if(ids.length > 0){
-            backend = `http://127.0.0.1:8080/search_movie/${ids}/1/10`;
+            backend = `${url}/search_movie/${ids}/1/10`;
         }else{
-            backend = `http://127.0.0.1:8080/search_movie/1/100`;
+            backend = `${url}/search_movie/1/100`;
         }
 
         const res = await fetch(backend);

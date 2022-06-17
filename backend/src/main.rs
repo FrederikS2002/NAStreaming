@@ -53,7 +53,7 @@ async fn main() -> std::io::Result<()> {
             .service(api::movie_loc_db::upload_episodes)
     })
     .bind(("127.0.0.1", 8080))?
-    .bind(("192.168.178.5", 8080))?
+    // .bind(("192.168.178.5", 8080))?
     .run()
     .await
 }
