@@ -2,8 +2,6 @@
     import { page } from '$app/stores';
     import { addNew, changeTime, epi_sub } from "../../components/info/stores/episodes_store";
     import axios from "axios";
-    import url from "../../components/urls";
-
     let array:any[] = [];
     epi_sub((value:any[]) => array = value);
     let movie = $page.params.id;

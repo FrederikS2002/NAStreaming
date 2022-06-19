@@ -1,5 +1,4 @@
 <script lang="ts">
-
 	/*let time = 0;
 	let next_update = 0;
 	$: if (time >= next_update) {
@@ -44,7 +43,8 @@
         //console.log(key);
     }*/
 
-import VideoPlayer from "../../components/player/VideoPlayer.svelte";
+	import VideoPlayer from '../../components/player/VideoPlayer.svelte';
 </script>
+
 <!--<svelte:window on:keydown={handleKeydown}/>-->
 <VideoPlayer />
