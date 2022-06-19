@@ -1,21 +1,25 @@
-<script>
+<script lang="ts">
 	import { videoSubscribe } from '../stores/video';
 
-	let video;
+	let video: HTMLVideoElement | null;
 	//TODO:CHECK ON DESTROY
 	const videodel = videoSubscribe((value) => (video = value.video));
 </script>
 
-<div class="play" orient="vertical">
+<div class="play">
 	<input type="range" min="0.5" max="5" step="0.1" bind:value={video.playbackRate} />
 </div>
-<div class="vol" orient="vertical">
+<div class="vol">
 	<input
 		type="range"
 		min="0"
 		max="100"
-		value={video.volume * 100}
-		on:change={(e) => (video.volume = e.target.value / 100)}
+		value={video ? video.volume * 100 : 0}
+		on:change={(e) => {
+			if (video && e.target) {
+				video.volume = e.target.value / 100;
+			}
+		}}
 	/>
 </div>
 

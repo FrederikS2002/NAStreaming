@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { bindVideoData, videoSubscribe } from './stores/video.ts';
+	import { bindVideoData, videoSubscribe } from './stores/video';
 
 	let currentTime = 0;
 	let duration = 0;
 	let paused = true;
-	let video = null;
+	let video:any = null;
 
 	//TODO: FIX UPDATE time -1h
 	$: bindVideoData(video, duration, currentTime, paused);

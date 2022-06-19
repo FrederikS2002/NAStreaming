@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { videoSubscribe } from '../stores/video';
 	//TODO:onDestory
-	let video;
+	let video: HTMLVideoElement | null;
 	videoSubscribe((value) => {
 		video = value.video;
 	});
@@ -12,6 +12,7 @@
 		return false;
 	};
 	const toggleMute = () => {
+        if(!video) return;
 		video.muted = !video.muted;
 	};
 
@@ -23,6 +24,7 @@
 	};
 
 	const setPlaybackDefault = () => {
+        if(!video) return;
 		video.playbackRate = 1;
 	};
 </script>

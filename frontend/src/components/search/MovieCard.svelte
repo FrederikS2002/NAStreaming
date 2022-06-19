@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let movie;
+	export let movie:any;
 </script>
 
 <a sveltekit:noscroll sveltekit:prefetch href={'/info/' + movie.uuid}

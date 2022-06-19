@@ -1,6 +1,6 @@
 <script lang="ts">
 	import MovieCard from './MovieCard.svelte';
-	export let movies;
+	export let movies:any;
 </script>
 
 <div class="movies">

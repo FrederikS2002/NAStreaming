@@ -10,14 +10,14 @@ const { subscribe, set, update } = writable<test>({
 	dragOverIndex: null
 });
 
-const updateDragOverIndex = (index: number) => {
+const updateDragOverIndex = (index: number | null) => {
 	update((n) => {
 		n.dragOverIndex = index;
 		return n;
 	});
 };
 
-const updateDragStartIndex = (index: number) => {
+const updateDragStartIndex = (index: number | null) => {
 	update((n) => {
 		n.dragStartIndex = index;
 		return n;

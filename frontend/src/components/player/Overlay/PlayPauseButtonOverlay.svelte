@@ -3,9 +3,9 @@
 	import Play from 'svelte-bootstrap-icons/lib/Play/Play.svelte';
 	import Pause from 'svelte-bootstrap-icons/lib/Pause/Pause.svelte';
 
-	export let overlay;
-	let video;
-	let paused;
+	export let overlay: any;
+	let video: HTMLVideoElement | null;
+	let paused: boolean;
 
 	videoSubscribe((value) => {
 		video = value.video;
@@ -20,6 +20,7 @@
 	};
 
 	const togglePlay = () => {
+		if (!video) return;
 		if (isPlaying()) {
 			video.pause();
 		} else {

@@ -1,13 +1,13 @@
 <script lang="ts">
-	export let epi;
-	export let image;
-	export let title;
-	export let time;
+	export let epi:number
+	export let image: string;
+	export let title: string;
+	export let time: string;
 	import { subscribedrag, updateDragOverIndex, updateDragStartIndex } from './stores/localstore';
 	import { changeOrder } from './stores/episodes_store';
 
-	let item;
-	let dragIndexes;
+	let item: any;
+	let dragIndexes: any;
 	subscribedrag((value) => (dragIndexes = value));
 
 	$: genEpi = () => {

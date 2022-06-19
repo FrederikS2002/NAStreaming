@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { changeOrder } from './stores/episodes_store';
 
-	export let epi;
+	export let epi: number;
 	import { subscribedrag, updateDragOverIndex } from './stores/localstore';
 
-	let item;
-	let dragIndexes;
+	let item:any;
+	let dragIndexes:any;
 	subscribedrag((value) => (dragIndexes = value));
 
 	const onDragEnter = () => {

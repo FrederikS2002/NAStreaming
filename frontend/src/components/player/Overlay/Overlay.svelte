@@ -10,7 +10,7 @@
 	import Slider from './Slider.svelte';
 
 	let overlay = true;
-	let video;
+	let video: HTMLVideoElement | null;
 	//TODO:CHECK ON DESTROY
 	const videodel = videoSubscribe((value) => (video = value.video));
 	const toggleOverlay = () => (overlay = !overlay);
