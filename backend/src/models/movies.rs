@@ -5,13 +5,13 @@ use serde::Serialize;
 
 #[derive(Queryable, Debug, Serialize)]
 pub struct Movie {
-    id: i32,
-    uuid: String,
+    pub id: i32,
+    pub uuid: String,
     #[serde(rename = "type")]
-    type_: String,
-    titles: String,
-    categories: String,
-    age_restriction: i32,
+    pub type_: String,
+    pub titles: String,
+    pub categories: String,
+    pub age_restriction: i32,
 }
 
 pub struct MovieService<'a> {
@@ -29,6 +29,15 @@ impl<'a> MovieService<'a> {
         use crate::schema::movies::dsl::movies;
         let movie: Movie = movies.find(id).first(self.conn)?;
         Ok(movie)
+    }
+
+    pub fn show_uuid(&self, uuidc: String) -> Result<Vec<Movie>> {
+        use crate::schema::movies::dsl::{movies, uuid};
+        Ok(movies
+            .filter(uuid.eq(uuidc))
+            .limit(1)
+            .load::<Movie>(self.conn)?) 
+
     }
 
     pub fn show_page(&self, search: &str, page: i64, pagesize: i64) -> Result<Vec<Movie>> {

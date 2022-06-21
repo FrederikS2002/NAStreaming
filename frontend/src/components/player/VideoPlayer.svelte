@@ -5,9 +5,7 @@
 </script>
 
 <div>
-	<Fullscreen let:onToggle={
-// @ts-ignore
-	toggleFullscreen}>
+	<Fullscreen let:onToggle={toggleFullscreen}>
 		<Overlay />
 		<Video />
 	</Fullscreen>

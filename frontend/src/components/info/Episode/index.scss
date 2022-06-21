@@ -1,0 +1,40 @@
+$height: 10vh;
+$width: 90%;
+$paddingtop: 2%;
+$paddingside: 5%;
+.episode {
+	position: relative;
+	display: flex;
+	width: calc($width - ($paddingside * 2));
+	margin: 0 calc((100% - $width) / 2);
+	padding: $paddingtop $paddingside;
+	height: $height;
+	background-color: rgba(0, 0, 0, 0.4);
+	cursor: pointer;
+
+	& .image {
+		position: relative;
+		height: 100%;
+		& img {
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+
+	& .text {
+		& h1 {
+			display: inline;
+			font-size: 2.5vh;
+			font-weight: bold;
+			margin: 0;
+			color: white;
+		}
+
+		& h2 {
+			font-size: 1.5vh;
+			font-weight: normal;
+			margin: 0;
+			color: gray;
+		}
+	}
+}
