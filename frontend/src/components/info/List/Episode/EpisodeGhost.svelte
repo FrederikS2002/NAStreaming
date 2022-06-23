@@ -1,18 +1,22 @@
 <script lang="ts">
 	import './index.scss';
-	export let episode: any;
+	import { getEpisodeData } from './index';
+	import type { test } from '../stores/episodeOrder';
+	export let episode: test;
 	export let pos: number;
-	import { generateStyle } from './index';
+	let episodedata = getEpisodeData(episode.epi);
 </script>
 
-<div class="episode" style={`top:${pos}px`}>
-	<div class="image"><img class="thumb" src={episode.thumb} alt="" draggable="false" /></div>
-	<div class="text">
-		<h1>{episode.changed}.</h1>
-		<h1>{episode.title}</h1>
-		<h2>{episode.description}</h2>
+{#if episodedata != null}
+	<div class="episode" style={`top:${pos}px`}>
+		<div class="image"><img class="thumb" src={episodedata.thumb} alt="" draggable="false" /></div>
+		<div class="text">
+			<h1>{episode.new}.</h1>
+			<h1>{episodedata.title}</h1>
+			<h2>{episodedata.description}</h2>
+		</div>
 	</div>
-</div>
+{/if}
 
 <style lang="scss">
 	.episode {

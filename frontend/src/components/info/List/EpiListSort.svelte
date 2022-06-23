@@ -8,8 +8,10 @@
 	let posY: number;
 	let dragstuff: any;
 	let epilist: test[];
+
 	epi_order_subscribe((value): test[] => (epilist = value));
 	subscribedrag((value) => (dragstuff = value));
+
 	$: active = () => {
 		for (let i = 0; i < dragstuff.cords.length; i++) {
 			if (dragstuff.cords[i] && dragstuff.cords[i] > posY) {
@@ -23,9 +25,11 @@
 		}
 		return null;
 	};
+
 	const setPosY = (e: any) => {
 		posY = e.clientY + dragstuff.scrollprogress;
 	};
+
 	//TODO: FIGURE OUT HOW TO FIX THE SPACING BUG
 </script>
 

@@ -1,13 +1,10 @@
 <script lang="ts">
 	import './index.scss';
-	import { generateStyle } from './index';
-	import { onDestroy } from 'svelte';
+	import { generateStyle, getEpisodeData } from './index';
 	import type { test } from '../stores/episodeOrder';
-	import { epi_sub, type test2 } from '../stores/episodeData';
 	export let fml: number;
 	export let episode: test;
-	let episodedata: test2 | null;
-	onDestroy(epi_sub((v) => (episodedata = v.filter((v) => v.epi === episode.epi)[0])));
+	let episodedata = getEpisodeData(episode.epi);
 </script>
 
 {#if episodedata != null}
