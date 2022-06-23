@@ -1,7 +1,7 @@
 <script lang="ts">
-	import EpiListSort from '../Episode/EpiListSort.svelte';
+	import EpiListSort from '../List/EpiListSort.svelte';
 	import OptionBarNormal from '../OptionBar/normal.svelte';
-	import { setScrollProgress } from '../Episode/Sort/store';
+	import { setScrollProgress } from '../List/stores/store';
     import './index.scss';
 	export let movies: any;
 

@@ -1,8 +1,8 @@
 <script lang="ts">
 	export let epilist: any[];
-	import Episode from './edit.svelte';
-	import EpisodeGhost from './EpisodeGhost.svelte';
-	import { generateFML } from './index';
+	import Episode from './Episode/edit.svelte';
+	import EpisodeGhost from './Episode/EpisodeGhost.svelte';
+	import { generateFML } from './Episode/index';
 	import { subscribedrag } from './stores/store';
 	let posY: number;
 	let dragstuff: any;

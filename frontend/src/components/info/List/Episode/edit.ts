@@ -6,7 +6,7 @@ import {
 	removeMouseHeightStart,
 	removeDragStartIndex,
 	updateTurnPoints
-} from './Sort/store';
+} from '../stores/store';
 
 export const onMouseDown = (epi: number) => {
 	//delete default ghost

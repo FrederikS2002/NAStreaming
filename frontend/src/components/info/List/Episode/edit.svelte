@@ -7,7 +7,7 @@
 	export let style: string = '';
 	import { generateStyle } from '.';
 	import { onMouseDown, onMouseUp } from './edit';
-	import { updateTurnPoints } from './stores/store';
+	import { updateTurnPoints } from '../stores/store';
 	let me: HTMLElement;
 	$: top = me ? me.getBoundingClientRect().top + window.scrollY : 0;
 	$: height = me ? me.clientHeight : 0;

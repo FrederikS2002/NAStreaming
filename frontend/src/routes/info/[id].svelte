@@ -20,7 +20,7 @@
 </script>
 
 <script lang="ts">
-	import { onMouseUp } from '../../components/info/Episode/edit';
+	import { onMouseUp } from '../../components/info/List/Episode/edit';
 	import Info from '../../components/info/Info/index.svelte';
 	export let movies: any;
 
