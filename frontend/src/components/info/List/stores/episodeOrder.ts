@@ -31,5 +31,8 @@ const changeOrder = (startIndex: number, dropIndex: number) => {
 		}
 	});
 };
+const setEpisodeOrderArr = (value: test[]) => {
+	set(value);
+};
 const epi_order_subscribe = subscribe;
-export { addNew, epi_order_subscribe, changeOrder };
+export { addNew, epi_order_subscribe, changeOrder, setEpisodeOrderArr };

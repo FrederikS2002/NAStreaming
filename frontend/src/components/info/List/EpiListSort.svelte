@@ -1,11 +1,14 @@
 <script lang="ts">
-	export let epilist: any[];
 	import Episode from './Episode/edit.svelte';
 	import EpisodeGhost from './Episode/EpisodeGhost.svelte';
 	import { generateFML } from './Episode/index';
+	import { epi_order_subscribe } from './stores/episodeOrder';
+	import type { test } from './stores/episodeOrder';
 	import { subscribedrag } from './stores/store';
 	let posY: number;
 	let dragstuff: any;
+	let epilist: test[];
+	epi_order_subscribe((value): test[] => (epilist = value));
 	subscribedrag((value) => (dragstuff = value));
 	$: active = () => {
 		for (let i = 0; i < dragstuff.cords.length; i++) {

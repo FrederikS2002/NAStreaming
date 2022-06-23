@@ -3,6 +3,8 @@
 	import OptionBarNormal from '../OptionBar/normal.svelte';
 	import { setScrollProgress } from '../List/stores/store';
 	import './index.scss';
+	import { setEpisodeData, epi_sub } from '../List/stores/episodeData';
+	import { setEpisodeOrderArr } from '../List/stores/episodeOrder';
 	export let movies: any;
 
 	let top: HTMLImageElement | null;
@@ -10,6 +12,20 @@
 	const onScroll = (e: any) => {
 		setScrollProgress(e.target.scrollTop);
 	};
+
+	setEpisodeData(movies.epilist);
+	const generateOrder = () => {
+		let result: any[] = [];
+		for (let i = 0; i < movies.epilist.length; i++) {
+			result.push({
+				epi: movies.epilist[i].epi,
+				new: movies.epilist[i].epi,
+				type: 'epi'
+			});
+		}
+		return result.sort((a, b) => a.new - b.new);
+	};
+	setEpisodeOrderArr(generateOrder());
 </script>
 
 <div
@@ -23,5 +39,5 @@
 		<h2>{movies.description}</h2>
 	</div>
 	<OptionBarNormal />
-	<EpiListSort epilist={movies.epilist} />
+	<EpiListSort />
 </div>

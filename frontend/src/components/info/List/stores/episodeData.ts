@@ -17,8 +17,8 @@ const addNew = (input: test2) => {
 	});
 };
 
-const setArr = (value: test2[]) => {
+const setEpisodeData = (value: test2[]) => {
 	set(value);
 };
 const epi_sub = subscribe;
-export { addNew, epi_sub, setArr };
+export { addNew, epi_sub, setEpisodeData };
