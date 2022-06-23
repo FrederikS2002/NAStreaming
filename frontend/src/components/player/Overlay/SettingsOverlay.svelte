@@ -12,7 +12,7 @@
 		return false;
 	};
 	const toggleMute = () => {
-        if(!video) return;
+		if (!video) return;
 		video.muted = !video.muted;
 	};
 
@@ -24,7 +24,7 @@
 	};
 
 	const setPlaybackDefault = () => {
-        if(!video) return;
+		if (!video) return;
 		video.playbackRate = 1;
 	};
 </script>

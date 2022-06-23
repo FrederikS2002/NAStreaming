@@ -64,21 +64,21 @@ const removeMouseHeightStart = () => {
 	});
 };
 
-const updateTurnPoints = (index:number, value: number | null) => {
+const updateTurnPoints = (index: number, value: number | null) => {
 	update((n) => {
 		let mod = n.cords;
 		mod[index] = value;
 		n.cords = [...mod];
 		return n;
 	});
-}
+};
 
-const setScrollProgress = (progress:number) => {
+const setScrollProgress = (progress: number) => {
 	update((n) => {
 		n.scrollprogress = progress;
 		return n;
 	});
-}
+};
 const subscribedrag = subscribe;
 export {
 	updateTurnPoints,

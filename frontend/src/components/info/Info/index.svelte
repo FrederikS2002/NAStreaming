@@ -2,7 +2,7 @@
 	import EpiListSort from '../List/EpiListSort.svelte';
 	import OptionBarNormal from '../OptionBar/normal.svelte';
 	import { setScrollProgress } from '../List/stores/store';
-    import './index.scss';
+	import './index.scss';
 	export let movies: any;
 
 	let top: HTMLImageElement | null;

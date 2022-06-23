@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 
-type test = {
+export type test2 = {
 	uuid: string;
 	epi: number;
 	title: string;
@@ -9,15 +9,15 @@ type test = {
 	progress: number;
 };
 
-const { subscribe, set, update } = writable<test[]>();
+const { subscribe, set, update } = writable<test2[]>();
 
-const addNew = (input: test) => {
-	update((n: test[]) => {
+const addNew = (input: test2) => {
+	update((n: test2[]) => {
 		return [...n, input];
 	});
 };
 
-const setArr = (value: test[]) => {
+const setArr = (value: test2[]) => {
 	set(value);
 };
 const epi_sub = subscribe;

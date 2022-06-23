@@ -4,7 +4,7 @@
 	let currentTime = 0;
 	let duration = 0;
 	let paused = true;
-	let video:any = null;
+	let video: any = null;
 
 	//TODO: FIX UPDATE time -1h
 	$: bindVideoData(video, duration, currentTime, paused);

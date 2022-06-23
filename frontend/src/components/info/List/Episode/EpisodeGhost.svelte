@@ -1,8 +1,8 @@
 <script lang="ts">
 	import './index.scss';
 	export let episode: any;
-    export let pos: number;
-	import {generateStyle} from './index';
+	export let pos: number;
+	import { generateStyle } from './index';
 </script>
 
 <div class="episode" style={`top:${pos}px`}>
@@ -14,9 +14,9 @@
 	</div>
 </div>
 
-<style  lang="scss">
-    .episode {
-        position: absolute;
-        opacity: .5;
-    }
+<style lang="scss">
+	.episode {
+		position: absolute;
+		opacity: 0.5;
+	}
 </style>

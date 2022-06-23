@@ -6,14 +6,19 @@ type test = {
 	paused: boolean;
 };
 
-const {subscribe, set, update} = writable<test>({
+const { subscribe, set, update } = writable<test>({
 	video: null,
 	duration: 0,
 	currentTime: 0,
-	paused: true,
+	paused: true
 });
 
-const bindVideoData = (video: HTMLVideoElement | null, duration: number, currentTime: number, paused: boolean) => {
+const bindVideoData = (
+	video: HTMLVideoElement | null,
+	duration: number,
+	currentTime: number,
+	paused: boolean
+) => {
 	update((n) => {
 		n.video = video;
 		n.duration = duration;
@@ -25,27 +30,27 @@ const bindVideoData = (video: HTMLVideoElement | null, duration: number, current
 
 const videoVolumeUp = () => {
 	update((n) => {
-		if(!n.video)return n;
-		if(n.video.volume + 0.05 <= 1){
+		if (!n.video) return n;
+		if (n.video.volume + 0.05 <= 1) {
 			n.video.volume += 0.05;
-		}else{
+		} else {
 			n.video.volume = 1;
 		}
 		return n;
 	});
-}
+};
 
 const videoVolumeDown = () => {
 	update((n) => {
-		if(!n.video)return n;
-		if(n.video.volume-0.05 >= 0){
+		if (!n.video) return n;
+		if (n.video.volume - 0.05 >= 0) {
 			n.video.volume -= 0.05;
-		}else{
+		} else {
 			n.video.volume = 0;
 		}
 		return n;
 	});
-}
+};
 
 const skipForward = () => {
 	update((n) => {

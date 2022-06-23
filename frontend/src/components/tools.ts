@@ -1,4 +1,4 @@
 const redirect = (url: string) => {
-    //TODO: Redirect
-}
-export {redirect};
+	//TODO: Redirect
+};
+export { redirect };

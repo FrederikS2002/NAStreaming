@@ -2,7 +2,11 @@
 	import getTime from '../convertSecondsToTime';
 	import { videoSubscribe } from '../stores/video';
 
-	let duration:number, currentTime:number, time1:HTMLUnknownElement, time2:HTMLUnknownElement, hover:HTMLDivElement;
+	let duration: number,
+		currentTime: number,
+		time1: HTMLUnknownElement,
+		time2: HTMLUnknownElement,
+		hover: HTMLDivElement;
 	//TODO:Setting, onDestroy
 	let remainingTime = true;
 	videoSubscribe((value) => {

@@ -29,7 +29,7 @@
 
 <div
 	class="episode"
-	style={generateStyle(fml) + ';' + oorb(top, height, pos)+";"+style}
+	style={generateStyle(fml) + ';' + oorb(top, height, pos) + ';' + style}
 	draggable={true}
 	bind:this={me}
 	on:mousedown={(_) => {

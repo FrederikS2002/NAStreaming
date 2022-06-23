@@ -16,14 +16,14 @@ export const onMouseDown = (epi: number) => {
 	// e.dataTransfer.effectAllowed = 'move';
 
 	updateDragStartIndex(epi);
-	updateTurnPoints(epi, null)
+	updateTurnPoints(epi, null);
 };
 
 export const onMouseUp = () => {
 	removeMouseHeight();
 	removeMouseHeightStart();
 	removeDragStartIndex();
-}
+};
 
 export const onDrag = (e: any) => {
 	updateMouseHeight(e.target.offsetTop);
@@ -33,7 +33,6 @@ export const onDragEnd = () => {
 	removeMouseHeightStart();
 	removeMouseHeight();
 };
-
 
 // const onDragEnter = () => {
 //     if (dragIndexes.dragStartIndex == null) return;

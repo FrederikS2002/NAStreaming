@@ -1,24 +1,24 @@
 .info {
-    z-index: 1;
-    position: fixed;
-    width: 70%;
-    height: 100%;
-    left: 15%;
-    overflow-x: auto;
-    & .thumb {
-        z-index: 2;
-        position: absolute;
-        width: 100%;
-        object-fit: cover;
-    }
-    & .over_thumb {
-        z-index: 3;
-        position: relative;
-        width: 100%;
-        color: white;
-        & img {
-            margin: 5% 0 0 5%;
-            width: 30%;
-        }
-    }
+	z-index: 1;
+	position: fixed;
+	width: 70%;
+	height: 100%;
+	left: 15%;
+	overflow-x: auto;
+	& .thumb {
+		z-index: 2;
+		position: absolute;
+		width: 100%;
+		object-fit: cover;
+	}
+	& .over_thumb {
+		z-index: 3;
+		position: relative;
+		width: 100%;
+		color: white;
+		& img {
+			margin: 5% 0 0 5%;
+			width: 30%;
+		}
+	}
 }

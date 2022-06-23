@@ -1,9 +1,9 @@
 import { writable } from 'svelte/store';
 
-type test = {
-    epi: number | null,
-    new: number,
-    type: string,
+export type test = {
+	epi: number | null;
+	new: number;
+	type: string;
 };
 
 const { subscribe, set, update } = writable<test[]>();
@@ -31,5 +31,5 @@ const changeOrder = (startIndex: number, dropIndex: number) => {
 		}
 	});
 };
-const epi_sub = subscribe;
-export { addNew, epi_sub, changeOrder };
+const epi_order_subscribe = subscribe;
+export { addNew, epi_order_subscribe, changeOrder };

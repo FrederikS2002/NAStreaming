@@ -2,7 +2,7 @@
 	import './index.scss';
 	export let episode: any;
 	export let fml: number;
-	import {generateStyle} from './index';
+	import { generateStyle } from './index';
 </script>
 
 <div class="episode" style={generateStyle(fml)} on:click>
