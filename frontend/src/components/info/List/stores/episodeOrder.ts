@@ -1,25 +1,16 @@
 import { writable } from 'svelte/store';
 
 type test = {
-	uuid: string;
-	title: string;
-	epi: number;
-	time: string;
-	img_src: string;
-	file: null | File;
+    epi: number | null,
+    new: number,
+    type: string,
 };
 
-const { subscribe, set, update } = writable<test[]>([]);
+const { subscribe, set, update } = writable<test[]>();
 
 const addNew = (input: test) => {
 	update((n: test[]) => {
 		return [...n, input];
-	});
-};
-const changeTime = (time: string, index: number) => {
-	update((n: test[]) => {
-		n[index].time = time;
-		return [...n];
 	});
 };
 
@@ -41,4 +32,4 @@ const changeOrder = (startIndex: number, dropIndex: number) => {
 	});
 };
 const epi_sub = subscribe;
-export { changeTime, addNew, epi_sub, changeOrder };
+export { addNew, epi_sub, changeOrder };

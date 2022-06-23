@@ -2,7 +2,7 @@
 	export let episode: any;
 	export let fml: number = 1;
     export let url: string;
-	import Episode from './index.svelte';
+	import Episode from './normal.svelte';
     import {redirect} from '../../tools';
 </script>
 
