@@ -4,7 +4,7 @@
 	import type { test } from '../stores/episodeOrder';
 	export let episode: test;
 	export let pos: number;
-	let episodedata = getEpisodeData(episode.epi);
+	let episodedata = getEpisodeData(episode.epi, episode.type);
 </script>
 
 {#if episodedata != null}

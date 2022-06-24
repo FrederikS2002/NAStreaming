@@ -1,6 +1,8 @@
-import { url, play } from "../../../urls";
-import { onDestroy } from "svelte";
-import { epi_sub, type test2 } from "../stores/episodeData";
+import { url, play } from '../../../urls';
+import { onDestroy } from 'svelte';
+import { epi_sub, type test2 } from '../stores/episodeData';
+import { updateDragOverIndex } from '../stores/store';
+import { epi_data_subscribe } from '../stores/episodeUpload';
 
 const generateStyle = (fml: number) => {
 	if (fml == 0) {
@@ -28,22 +30,43 @@ const generateUrl = (epi: number) => {
 	return url + play + uuid;
 };
 
-const oorb = (top: number, height: number, pos: number, active: boolean) => {
+const oorb = (
+	epi: number,
+	top: number,
+	height: number,
+	pos: number,
+	active: boolean,
+	currentPos: number
+) => {
 	if (active) {
 		if (pos < top + height / 2) {
+			if (currentPos != epi - 1) {
+				updateDragOverIndex(epi - 1);
+			}
 			return `margin-top: ${height}px`;
 		} else {
+			if (currentPos != epi) {
+				updateDragOverIndex(epi);
+			}
 			return `margin-bottom: ${height}px`;
 		}
 	}
 	return '';
 };
 
-const getEpisodeData = (epi: number | null) => {
-	if(epi == null) return {title: "", description: "", thumb:""};
-	let res: test2 | null = null;
-	onDestroy(epi_sub((v) => (res = v.filter((v) => v.epi === epi)[0])));
-	return res;
-}
+const getEpisodeData = (epi: number | null, type: string) => {
+	if (type == 'epi') {
+		if (epi == null) return { title: '', description: '', thumb: '' };
+		let res: test2 | null = null;
+		onDestroy(epi_sub((v) => (res = v.filter((v) => v.epi === epi)[0])));
+		return res;
+	}else if (type == 'file') {
+		if (epi == null) return { title: '', description: '', thumb: '' };
+		let res:any;
+		onDestroy(epi_data_subscribe((v) => (res = v.filter((v) => v.index === epi)[0])));
+		return { title: res.name, description: res.description, thumb: '' };
+	}
+	return { title: '', description: '', thumb: '' };
+};
 
 export { generateStyle, generateFML, generateUrl, oorb, getEpisodeData };

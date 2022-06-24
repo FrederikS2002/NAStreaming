@@ -22,6 +22,7 @@
 <script lang="ts">
 	import { onMouseUp } from '../../components/info/List/Episode/edit';
 	import Info from '../../components/info/Info/index.svelte';
+	import { onDropFile } from '../../components/info/upload';
 	export let movies: any;
 
 	const onMouseUpL = () => {
@@ -33,14 +34,13 @@
 	};
 </script>
 
-<div class="container" on:mouseup={(_) => onMouseUpL()}>
+<div
+	class="container"
+	on:mouseup={(_) => onMouseUpL()}
+	on:dragover={(e) => e.preventDefault()}
+	on:drop={(e) => onDropFile(e)}
+>
 	<Info {movies} />
-	<!--    <div on:dragover={(ev) => { ev.preventDefault() }} on:drop={e => onDropFile(e)} class="uplaodcontainer">-->
-	<!--        {#each array as epi, index}-->
-	<!--            <Episode epi={index} title={epi.title} image={epi.img_src} time={epi.time}/>-->
-	<!--        {/each}-->
-	<!--        <HiddenEpisode epi={array.length} />-->
-	<!--    </div>-->
 </div>
 
 <style lang="scss">

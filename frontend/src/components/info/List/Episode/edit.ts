@@ -1,10 +1,12 @@
+import { changeOrder } from '../stores/episodeOrder';
 import {
 	updateDragStartIndex,
 	removeMouseHeight,
 	updateMouseHeight,
 	removeMouseHeightStart,
 	removeDragStartIndex,
-	updateTurnPoints
+	updateTurnPoints,
+	subscribedrag
 } from '../stores/store';
 
 export const onMouseDown = (epi: number) => {
@@ -13,6 +15,10 @@ export const onMouseDown = (epi: number) => {
 };
 
 export const onMouseUp = () => {
+	let test: any;
+	subscribedrag(v => test = v);
+	changeOrder(test.dragStartIndex - 1, test.dragOverIndex);
+	//console.log(test.dragStartIndex, test.dragOverIndex);
 	removeMouseHeight();
 	removeMouseHeightStart();
 	removeDragStartIndex();

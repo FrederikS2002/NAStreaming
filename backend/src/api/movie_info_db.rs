@@ -45,10 +45,10 @@ async fn movie_detail(
     let color = [0, 0, 35];
     let description = "abcd".to_string();
     let mut epilist = vec![];
-    epilist.push(MovieInfoEpi {uuid:"abcd".to_string(), epi: 1, title: "tit".to_string(), description: "le".to_string(), thumb: "https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/D62F35AB392E56542D9E7F541B55F2E79D75B95ADE5F1578BD91FC5A7959CA83/scale?width=400&aspectRatio=NaN&format=jpeg".to_string(), progress: 27});
-    epilist.push(MovieInfoEpi {uuid: "efgh".to_string(), epi: 2, title: "tit".to_string(), description: "le".to_string(), thumb: "https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/D62F35AB392E56542D9E7F541B55F2E79D75B95ADE5F1578BD91FC5A7959CA83/scale?width=400&aspectRatio=NaN&format=jpeg".to_string(), progress: 27});
-    epilist.push(MovieInfoEpi {uuid: "efgh".to_string(), epi: 3, title: "tit".to_string(), description: "le".to_string(), thumb: "https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/D62F35AB392E56542D9E7F541B55F2E79D75B95ADE5F1578BD91FC5A7959CA83/scale?width=400&aspectRatio=NaN&format=jpeg".to_string(), progress: 27});
-    epilist.push(MovieInfoEpi {uuid: "efgh".to_string(), epi: 4, title: "tit".to_string(), description: "le".to_string(), thumb: "https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/D62F35AB392E56542D9E7F541B55F2E79D75B95ADE5F1578BD91FC5A7959CA83/scale?width=400&aspectRatio=NaN&format=jpeg".to_string(), progress: 27});
+    epilist.push(MovieInfoEpi {uuid:"abcd".to_string(), epi: 1, title: "tit1".to_string(), description: "le".to_string(), thumb: "https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/D62F35AB392E56542D9E7F541B55F2E79D75B95ADE5F1578BD91FC5A7959CA83/scale?width=400&aspectRatio=NaN&format=jpeg".to_string(), progress: 27});
+    epilist.push(MovieInfoEpi {uuid: "efgh".to_string(), epi: 2, title: "tit2".to_string(), description: "le".to_string(), thumb: "https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/D62F35AB392E56542D9E7F541B55F2E79D75B95ADE5F1578BD91FC5A7959CA83/scale?width=400&aspectRatio=NaN&format=jpeg".to_string(), progress: 27});
+    epilist.push(MovieInfoEpi {uuid: "efgh".to_string(), epi: 3, title: "ti3t".to_string(), description: "le".to_string(), thumb: "https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/D62F35AB392E56542D9E7F541B55F2E79D75B95ADE5F1578BD91FC5A7959CA83/scale?width=400&aspectRatio=NaN&format=jpeg".to_string(), progress: 27});
+    epilist.push(MovieInfoEpi {uuid: "efgh".to_string(), epi: 4, title: "tit4".to_string(), description: "le".to_string(), thumb: "https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/D62F35AB392E56542D9E7F541B55F2E79D75B95ADE5F1578BD91FC5A7959CA83/scale?width=400&aspectRatio=NaN&format=jpeg".to_string(), progress: 27});
     let json = Json(MovieInfoData {
         uuid: search_identifier.to_string(),
         titles,

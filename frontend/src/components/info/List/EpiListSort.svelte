@@ -30,6 +30,8 @@
 		posY = e.clientY + dragstuff.scrollprogress;
 	};
 
+	$: console.log(epilist);
+
 	//TODO: FIGURE OUT HOW TO FIX THE SPACING BUG
 </script>
 
