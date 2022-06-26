@@ -2,11 +2,11 @@
 	import './index.scss';
 	import { generateStyle, getEpisodeData } from '.';
 	import { onMouseDown } from './edit';
-	import { subscribedrag, updateTurnPoints } from '../stores/store';
-	import type { test } from '../stores/episodeOrder';
+	import { subscribedrag, updateTurnPoints } from '../stores/drag';
 	import { oorb } from './index';
+	import type { episodeOrder } from '../../types';
 
-	export let episode: test;
+	export let episode: episodeOrder;
 	export let fml: number;
 	export let pos: number;
 	export let activeEpi: number | null;
@@ -46,7 +46,11 @@
 			{#if episode.type == 'epi'}
 				<img class="thumb" src={episodedata.thumb} alt="" draggable="false" />
 			{:else if episode.type == 'file'}
-				<div class="pie" bind:clientHeight={pieheight} style="width: {pieheight}px; background: conic-gradient(green 0deg 1deg, #fff 1deg 360deg);" />
+				<div
+					class="pie"
+					bind:clientHeight={pieheight}
+					style="width: {pieheight}px; background: conic-gradient(green 0deg 1deg, #fff 1deg 360deg);"
+				/>
 			{:else}
 				<img class="thumb" src="" alt="" draggable="false" />
 			{/if}

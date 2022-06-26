@@ -4,9 +4,10 @@ table! {
         uuid -> Text,
         movie -> Text,
         epi -> Integer,
-        name -> Text,
+        title -> Text,
         filename -> Text,
         description -> Text,
+        thumb -> Text,
     }
 }
 

@@ -1,15 +1,7 @@
 import { writable } from 'svelte/store';
+import type { drag } from '../../types';
 
-export type test = {
-	dragStartIndex: null | number;
-	mouseHeight: number | null;
-	mouseHeightStart: number | null;
-	cords: (number | null)[];
-	scrollprogress: number;
-	dragOverIndex: null | number;
-};
-
-const { subscribe, set, update } = writable<test>({
+const { subscribe, set, update } = writable<drag>({
 	dragStartIndex: null,
 	mouseHeight: null,
 	cords: [],

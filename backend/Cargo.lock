@@ -321,6 +321,7 @@ dependencies = [
  "env_logger",
  "futures-util",
  "serde 1.0.137",
+ "serde_json",
  "uuid",
 ]
 

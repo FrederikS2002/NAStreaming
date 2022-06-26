@@ -1,6 +1,6 @@
 use crate::services::Services;
 use actix_web::{get, web::Data, web::Json, web::Path, HttpResponse, Responder, Result};
-use serde::Serialize;
+use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Debug)]
 struct MovieInfoData {
@@ -13,14 +13,13 @@ struct MovieInfoData {
     epilist: Vec<MovieInfoEpi>,
 }
 
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 struct MovieInfoEpi {
     uuid: String,
     epi: i32,
     title: String,
     description: String,
     thumb: String,
-    progress: u8,
 }
 
 #[get("/movie_detail/{uuid}")]
@@ -40,15 +39,13 @@ async fn movie_detail(
             .collect::<Vec<String>>(),
         None => vec!["".to_string()],
     };
-    let icon = "https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/8B541716B80EDE784F939632DD0C1FFF6BA18B918361D58383B10228E46EA523/scale?width=1920&aspectRatio=1.78&format=png".to_string();
-    let thumb = "https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/FA067D32C9A564BE1736D4087008BBB83658102AA4F9FF785A304C2454BAF526/scale?width=2880&aspectRatio=1.78&format=jpeg".to_string();
+    let icon = "https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/F180E12F2C8DAC50ACCD15197541CAEE53509C068E977C8F8EA8B5F962073994/scale?width=1920&aspectRatio=1.78&format=png".to_string();
+    let thumb = "https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/DB7CE36F697D9269E5B6E649CE6E963E1A1C4BDF37A529AAD2B5B3395164FABF/scale?width=2880&aspectRatio=1.78&format=jpeg".to_string();
     let color = [0, 0, 35];
     let description = "abcd".to_string();
-    let mut epilist = vec![];
-    epilist.push(MovieInfoEpi {uuid:"abcd".to_string(), epi: 1, title: "tit1".to_string(), description: "le".to_string(), thumb: "https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/D62F35AB392E56542D9E7F541B55F2E79D75B95ADE5F1578BD91FC5A7959CA83/scale?width=400&aspectRatio=NaN&format=jpeg".to_string(), progress: 27});
-    epilist.push(MovieInfoEpi {uuid: "efgh".to_string(), epi: 2, title: "tit2".to_string(), description: "le".to_string(), thumb: "https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/D62F35AB392E56542D9E7F541B55F2E79D75B95ADE5F1578BD91FC5A7959CA83/scale?width=400&aspectRatio=NaN&format=jpeg".to_string(), progress: 27});
-    epilist.push(MovieInfoEpi {uuid: "efgh".to_string(), epi: 3, title: "ti3t".to_string(), description: "le".to_string(), thumb: "https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/D62F35AB392E56542D9E7F541B55F2E79D75B95ADE5F1578BD91FC5A7959CA83/scale?width=400&aspectRatio=NaN&format=jpeg".to_string(), progress: 27});
-    epilist.push(MovieInfoEpi {uuid: "efgh".to_string(), epi: 4, title: "tit4".to_string(), description: "le".to_string(), thumb: "https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/D62F35AB392E56542D9E7F541B55F2E79D75B95ADE5F1578BD91FC5A7959CA83/scale?width=400&aspectRatio=NaN&format=jpeg".to_string(), progress: 27});
+    let epilist_temp = services.get_movie_filelocation_service().show_movie(search_identifier.to_string()).unwrap();
+    let epilist:Vec<MovieInfoEpi> =  serde_json::from_str(&serde_json::to_string(&epilist_temp).unwrap()).unwrap();
+    drop(epilist_temp);
     let json = Json(MovieInfoData {
         uuid: search_identifier.to_string(),
         titles,

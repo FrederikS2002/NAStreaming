@@ -1,19 +1,14 @@
 import { writable } from 'svelte/store';
+import type { episodeOrder } from '../../types';
 
-export type test = {
-	epi: number | null;
-	new: number;
-	type: string;
-};
-
-const { subscribe, set, update } = writable<test[]>();
+const { subscribe, set, update } = writable<episodeOrder[]>();
 
 const addNew = (input: any) => {
-	update((n: test[]) => {
-		if(!input.new) {
-			if(n.length > 0) {
-			input.new = n[n.length - 1].new + 1;
-			}else{
+	update((n: episodeOrder[]) => {
+		if (!input.new) {
+			if (n.length > 0) {
+				input.new = n[n.length - 1].new + 1;
+			} else {
 				input.new = 1;
 			}
 		}
@@ -22,7 +17,7 @@ const addNew = (input: any) => {
 };
 
 const changeOrder = (startIndex: number, dropIndex: number) => {
-	update((n: test[]) => {
+	update((n: episodeOrder[]) => {
 		// get draged item
 		const dragItem = n[startIndex];
 
@@ -47,7 +42,7 @@ const changeOrder = (startIndex: number, dropIndex: number) => {
 	});
 };
 
-const setEpisodeOrderArr = (value: test[]) => {
+const setEpisodeOrderArr = (value: episodeOrder[]) => {
 	set(value);
 };
 const epi_order_subscribe = subscribe;

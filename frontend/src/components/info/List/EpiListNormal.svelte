@@ -1,9 +1,10 @@
 <script lang="ts">
 	import Episode from './Episode/Redirect.svelte';
 	import { generateFML } from './Episode';
-	import { epi_order_subscribe, type test } from './stores/episodeOrder';
-	let epilist: test[];
-	epi_order_subscribe((value): test[] => (epilist = value));
+	import { epi_order_subscribe } from './stores/episodeOrder';
+import type { episodeOrder } from '../types';
+	let epilist: episodeOrder[];
+	epi_order_subscribe((value): episodeOrder[] => (epilist = value));
 </script>
 
 <div class="episodes">

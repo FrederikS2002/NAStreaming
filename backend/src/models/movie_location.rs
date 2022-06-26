@@ -1,17 +1,18 @@
 use crate::schema::*;
 use anyhow::Result;
 use diesel::{prelude::*, MysqlConnection};
-use serde::Serialize;
+use serde::{Serialize, Deserialize};
 
-#[derive(Queryable, Debug, Serialize)]
+#[derive(Queryable, Debug, Serialize, Deserialize)]
 pub struct MovieFileLoation {
     id: i32,
     uuid: String,
     movie: String,
     epi: i32,
-    name: String,
+    title: String,
     filename: String,
-    description: String
+    description: String,
+    thumb: String,
 }
 
 pub struct MovieFileLoationService<'a> {
@@ -29,6 +30,14 @@ impl<'a> MovieFileLoationService<'a> {
         use crate::schema::movie_filelocations::dsl::movie_filelocations;
         let movie: MovieFileLoation = movie_filelocations.find(id).first(self.conn)?;
         Ok(movie)
+    }
+
+    pub fn show_movie(&self, uuidc: String) -> Result<Vec<MovieFileLoation>> {
+        use crate::schema::movie_filelocations::dsl::{movie_filelocations, movie};
+
+        Ok(movie_filelocations
+            .filter(movie.eq(uuidc))
+            .load::<MovieFileLoation>(self.conn)?)
     }
 
     pub fn delete(&self, sql_index: i32) -> Result<()> {
@@ -51,7 +60,8 @@ pub struct NewMovieFileLoation {
     pub uuid: String,
     pub movie: String,
     pub epi: i32,
-    pub name: String,
+    pub title: String,
     pub filename: String,
-    pub description: String
+    pub description: String,
+    pub thumb: String
 }

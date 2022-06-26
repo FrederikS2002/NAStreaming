@@ -1,8 +1,8 @@
 <script lang="ts">
 	import './index.scss';
 	import { getEpisodeData } from './index';
-	import type { test } from '../stores/episodeOrder';
-	export let episode: test;
+	import type { episodeOrder } from '../../types';
+	export let episode: episodeOrder;
 	export let pos: number;
 	let episodedata = getEpisodeData(episode.epi, episode.type);
 </script>

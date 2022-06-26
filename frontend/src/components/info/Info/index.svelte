@@ -5,6 +5,7 @@
 	import { setEpisodeData } from '../List/stores/episodeData';
 	import { setEpisodeOrderArr } from '../List/stores/episodeOrder';
 	import { generateOrder, onScroll } from '.';
+	import EpiListNormal from '../List/EpiListNormal.svelte';
 
 	export let movies: any;
 
@@ -25,6 +26,6 @@
 		<img src={movies.icon} alt="" draggable="false" />
 		<h2>{movies.description}</h2>
 	</div>
-	<OptionBarNormal uuid={movies.uuid}/>
-	<EpiListSort />
+	<OptionBarNormal uuid={movies.uuid} />
+	<EpiListNormal />
 </div>

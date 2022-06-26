@@ -11,7 +11,7 @@ use uuid::Uuid;
 #[post("upload_episodes")]
 async fn upload_episodes(mut payload: Multipart, services: Data<Services>) -> Json<String> {
     let uuid = Uuid::new_v4().to_string();
-    let mut name = "".to_string();
+    let mut title = "".to_string();
     let mut fileupload = false;
     let mut movie = None;
     let mut epi = 0;
@@ -73,7 +73,7 @@ async fn upload_episodes(mut payload: Multipart, services: Data<Services>) -> Js
                     }
                 }
                 "name" => {
-                    name = match extract_text(field).await {
+                    title = match extract_text(field).await {
                         Ok(value) => value,
                         Err(err) => return Json(err.to_string()),
                     }
@@ -107,9 +107,10 @@ async fn upload_episodes(mut payload: Multipart, services: Data<Services>) -> Js
                 uuid,
                 movie: movie.unwrap(),
                 epi,
-                name,
+                title,
                 filename: filename.unwrap(),
                 description,
+                thumb: "".to_string()
             }) {
             Ok(_) => return Json("200".to_string()),
             Err(err) => return Json(err.to_string()),

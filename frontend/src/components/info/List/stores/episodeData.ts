@@ -1,23 +1,15 @@
 import { writable } from 'svelte/store';
+import type { episodeData } from '../../types';
 
-export type test2 = {
-	uuid: string;
-	epi: number;
-	title: string;
-	description: string;
-	thumb: string;
-	progress: number;
-};
+const { subscribe, set, update } = writable<episodeData[]>();
 
-const { subscribe, set, update } = writable<test2[]>();
-
-const addNew = (input: test2) => {
-	update((n: test2[]) => {
+const addNew = (input: episodeData) => {
+	update((n: episodeData[]) => {
 		return [...n, input];
 	});
 };
 
-const setEpisodeData = (value: test2[]) => {
+const setEpisodeData = (value: episodeData[]) => {
 	set(value);
 };
 const epi_sub = subscribe;

@@ -1,7 +1,7 @@
 <script context="module" lang="ts">
 	import { url } from '../../components/urls';
 
-	export async function load({ fetch, params }:any) {
+	export async function load({ fetch, params }: any) {
 		const id = params.id;
 		let backend = `${url}/movie_detail/${id}`;
 
@@ -23,8 +23,17 @@
 	import { onMouseUp } from '../../components/info/List/Episode/edit';
 	import Info from '../../components/info/Info/index.svelte';
 	import { onDropFile } from '../../components/info/upload';
-	export let movies: any;
-
+	import type { RootObj } from '../../components/info/types';
+	import { setData } from '../../components/info/List/stores/baseData';
+	export let movies: RootObj;
+	setData({
+		uuid: movies.uuid,
+		titles: movies.titles,
+		icon: movies.icon,
+		thumb: movies.thumb,
+		color: movies.color,
+		description: movies.description
+	});
 	const onMouseUpL = () => {
 		let dragged = document.querySelector('.dragged');
 		if (dragged) {

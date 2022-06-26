@@ -3,13 +3,13 @@
 	import EpisodeGhost from './Episode/EpisodeGhost.svelte';
 	import { generateFML } from './Episode/index';
 	import { epi_order_subscribe } from './stores/episodeOrder';
-	import type { test } from './stores/episodeOrder';
-	import { subscribedrag } from './stores/store';
+	import { subscribedrag } from './stores/drag';
+	import type { episodeOrder } from '../types';
 	let posY: number;
 	let dragstuff: any;
-	let epilist: test[];
+	let epilist: episodeOrder[];
 
-	epi_order_subscribe((value): test[] => (epilist = value));
+	epi_order_subscribe((value): episodeOrder[] => (epilist = value));
 	subscribedrag((value) => (dragstuff = value));
 
 	$: active = () => {

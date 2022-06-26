@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { skipBackward, skipForward } from '../stores/video';
-	export let overlay: Boolean;
+	export let overlay: boolean;
 </script>
 
 <div class="left" on:dblclick={skipBackward} on:click|self={() => (overlay = !overlay)} />
