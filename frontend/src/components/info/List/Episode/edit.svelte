@@ -58,11 +58,3 @@
 		</div>
 	</div>
 {/if}
-
-<style lang="scss">
-	.pie {
-		position: relative;
-		height: 100%;
-		border-radius: 50%;
-	}
-</style>

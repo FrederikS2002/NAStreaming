@@ -11,6 +11,7 @@ pub struct MovieFileLoation {
     epi: i32,
     name: String,
     filename: String,
+    description: String
 }
 
 pub struct MovieFileLoationService<'a> {
@@ -52,4 +53,5 @@ pub struct NewMovieFileLoation {
     pub epi: i32,
     pub name: String,
     pub filename: String,
+    pub description: String
 }

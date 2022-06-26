@@ -15,6 +15,7 @@ async fn upload_episodes(mut payload: Multipart, services: Data<Services>) -> Js
     let mut fileupload = false;
     let mut movie = None;
     let mut epi = 0;
+    let mut description = "".to_string();
     let mut filename = None;
     let mut filepath = None;
 
@@ -77,6 +78,12 @@ async fn upload_episodes(mut payload: Multipart, services: Data<Services>) -> Js
                         Err(err) => return Json(err.to_string()),
                     }
                 }
+                "description" => {
+                    description = match extract_text(field).await {
+                        Ok(value) => value,
+                        Err(err) => return Json(err.to_string()),
+                    }
+                }
                 _ => {
                     return Json("Invalid input".to_string());
                 }
@@ -102,6 +109,7 @@ async fn upload_episodes(mut payload: Multipart, services: Data<Services>) -> Js
                 epi,
                 name,
                 filename: filename.unwrap(),
+                description,
             }) {
             Ok(_) => return Json("200".to_string()),
             Err(err) => return Json(err.to_string()),

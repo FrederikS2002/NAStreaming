@@ -1,7 +1,7 @@
 <script context="module" lang="ts">
 	import { url } from '../../components/urls';
 
-	export async function load({ fetch, params }) {
+	export async function load({ fetch, params }:any) {
 		const id = params.id;
 		let backend = `${url}/movie_detail/${id}`;
 

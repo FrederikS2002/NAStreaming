@@ -6,6 +6,7 @@ table! {
         epi -> Integer,
         name -> Text,
         filename -> Text,
+        description -> Text,
     }
 }
 

@@ -25,6 +25,6 @@
 		<img src={movies.icon} alt="" draggable="false" />
 		<h2>{movies.description}</h2>
 	</div>
-	<OptionBarNormal />
+	<OptionBarNormal uuid={movies.uuid}/>
 	<EpiListSort />
 </div>
