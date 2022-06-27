@@ -1,16 +1,16 @@
 use crate::schema::*;
 use anyhow::Result;
 use diesel::{prelude::*, MysqlConnection};
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 #[derive(Queryable, Debug, Serialize, Deserialize)]
 pub struct MovieFileLoation {
     id: i32,
-    uuid: String,
-    movie: String,
-    epi: i32,
+    pub uuid: String,
+    pub movie: String,
+    pub epi: i32,
     title: String,
-    filename: String,
+    pub filename: String,
     description: String,
     thumb: String,
 }
@@ -32,11 +32,30 @@ impl<'a> MovieFileLoationService<'a> {
         Ok(movie)
     }
 
-    pub fn show_movie(&self, uuidc: String) -> Result<Vec<MovieFileLoation>> {
-        use crate::schema::movie_filelocations::dsl::{movie_filelocations, movie};
-
+    pub fn show_movie_loc_single(
+        &self,
+        mv: String,
+        uuidl: String,
+    ) -> Result<Vec<MovieFileLoation>> {
+        use crate::schema::movie_filelocations::dsl::{movie, movie_filelocations, uuid};
         Ok(movie_filelocations
-            .filter(movie.eq(uuidc))
+            .filter(movie.eq(mv))
+            .filter(uuid.eq(uuidl))
+            .load::<MovieFileLoation>(self.conn)?)
+    }
+
+    pub fn show_next_movie(&self, mv: String, prev: i32) -> Result<Vec<MovieFileLoation>> {
+        use crate::schema::movie_filelocations::dsl::{epi, movie, movie_filelocations};
+        Ok(movie_filelocations
+            .filter(movie.eq(mv))
+            .filter(epi.eq(prev + 1))
+            .load::<MovieFileLoation>(self.conn)?)
+    }
+
+    pub fn show_movie_loc_multi(&self, mv: String) -> Result<Vec<MovieFileLoation>> {
+        use crate::schema::movie_filelocations::dsl::{movie, movie_filelocations};
+        Ok(movie_filelocations
+            .filter(movie.eq(mv))
             .load::<MovieFileLoation>(self.conn)?)
     }
 
@@ -63,5 +82,5 @@ pub struct NewMovieFileLoation {
     pub title: String,
     pub filename: String,
     pub description: String,
-    pub thumb: String
+    pub thumb: String,
 }

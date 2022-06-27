@@ -43,7 +43,7 @@ async fn movie_detail(
     let thumb = "https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/DB7CE36F697D9269E5B6E649CE6E963E1A1C4BDF37A529AAD2B5B3395164FABF/scale?width=2880&aspectRatio=1.78&format=jpeg".to_string();
     let color = [0, 0, 35];
     let description = "abcd".to_string();
-    let epilist_temp = services.get_movie_filelocation_service().show_movie(search_identifier.to_string()).unwrap();
+    let epilist_temp = services.get_movie_filelocation_service().show_movie_loc_multi(search_identifier.to_string()).unwrap();
     let epilist:Vec<MovieInfoEpi> =  serde_json::from_str(&serde_json::to_string(&epilist_temp).unwrap()).unwrap();
     drop(epilist_temp);
     let json = Json(MovieInfoData {

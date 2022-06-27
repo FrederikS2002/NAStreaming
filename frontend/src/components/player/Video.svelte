@@ -1,5 +1,12 @@
 <script lang="ts">
+import { onDestroy } from 'svelte';
+
+import { file_location, url } from '../urls';
+import { epi_data_sub } from './stores/request';
+
 	import { bindVideoData, videoSubscribe } from './stores/video';
+import type { EpisodeData } from './types';
+	import './video.scss';
 
 	let currentTime = 0;
 	let duration = 0;
@@ -9,6 +16,8 @@
 	//TODO: FIX UPDATE time -1h
 	$: bindVideoData(video, duration, currentTime, paused);
 	videoSubscribe((value) => (currentTime = value.currentTime));
+	let data: EpisodeData;
+	onDestroy(epi_data_sub((value) => (data = value)));
 </script>
 
 <video
@@ -16,18 +25,10 @@
 	bind:duration
 	bind:paused
 	bind:this={video}
-	poster="https://sveltejs.github.io/assets/caminandes-llamigos.jpg"
+	poster=""
 	preload="metadata"
 >
-	<source src="https://sveltejs.github.io/assets/caminandes-llamigos.mp4" type="video/mp4" />
+	<source src={url + file_location + data.movie + "/" +data.file} type="video/mp4" />
 	Your browser does not support the video tag.
 	<track kind="captions" />
 </video>
-
-<style lang="scss">
-	video {
-		z-index: 0;
-		width: 100%;
-		height: auto;
-	}
-</style>

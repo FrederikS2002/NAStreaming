@@ -4,10 +4,63 @@ use crate::{
     services::Services,
 };
 use actix_multipart::Multipart;
-use actix_web::{post, web::Data, web::Json};
+use actix_web::{
+    get, post,
+    web::Json,
+    web::{Data, Path},
+};
 use futures_util::stream::StreamExt as _;
+use serde::{Deserialize, Serialize};
 use std::fs::remove_file;
 use uuid::Uuid;
+
+#[derive(Serialize)]
+struct EpiData {
+    movie: String,
+    next: String,
+    file: String,
+    progress: u64,
+}
+
+#[derive(Serialize, Deserialize)]
+struct EpiDataReciver {
+    movie: String,
+    episode: String,
+}
+#[get("epi_data/{movie}/{episode}")]
+async fn epi_data(payload: Path<EpiDataReciver>, services: Data<Services>) -> Json<EpiData> {
+    println!("test");
+    let loc = services
+        .get_movie_filelocation_service()
+        .show_movie_loc_single(payload.movie.clone(), payload.episode.clone())
+        .unwrap();
+    let loc = match loc.get(0) {
+        Some(v) => v,
+        None => {
+            return Json(EpiData {
+                movie: "".to_string(),
+                file: "".to_string(),
+                next: "".to_string(),
+                progress: 0,
+            })
+        }
+    };
+    let next = services
+        .get_movie_filelocation_service()
+        .show_next_movie(loc.movie.clone(), loc.epi)
+        .unwrap();
+    let next = match next.get(0) {
+        Some(v) => v.uuid.clone(),
+        None => "".to_string(),
+    };
+    return Json(EpiData {
+        movie: payload.movie.clone(),
+        file: loc.filename.clone(),
+        next,
+        progress: 0,
+    });
+}
+
 #[post("upload_episodes")]
 async fn upload_episodes(mut payload: Multipart, services: Data<Services>) -> Json<String> {
     let uuid = Uuid::new_v4().to_string();
@@ -95,10 +148,7 @@ async fn upload_episodes(mut payload: Multipart, services: Data<Services>) -> Js
         }
     }
 
-    if fileupload
-        && epi != 0
-        && matches!(&movie, Some(_value))
-        && matches!(&filename, Some(_value))
+    if fileupload && epi != 0 && matches!(&movie, Some(_value)) && matches!(&filename, Some(_value))
     {
         //TODO: Delete file on error db error
         match services
@@ -110,7 +160,7 @@ async fn upload_episodes(mut payload: Multipart, services: Data<Services>) -> Js
                 title,
                 filename: filename.unwrap(),
                 description,
-                thumb: "".to_string()
+                thumb: "".to_string(),
             }) {
             Ok(_) => return Json("200".to_string()),
             Err(err) => return Json(err.to_string()),
