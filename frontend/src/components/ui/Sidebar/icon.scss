@@ -1,0 +1,11 @@
+.obj {
+	cursor: pointer;
+	& svg {
+		$size: 30%;
+		$margin-bottom: 10%;
+		width: $size;
+		margin: 0 0 0 calc((100% - $size) / 2);
+		color: var(--secondary-color);
+	}
+    margin-bottom: 30%;
+}

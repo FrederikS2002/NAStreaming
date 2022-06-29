@@ -1,0 +1,15 @@
+.container {
+    z-index: 1;
+    $sidebarwidth: 3.5%;
+    $margin: 3.5%;
+    $margintb: 2.5%;
+    position: fixed;
+    right: 0;
+    top: 0;
+    background: var(--foreground);
+    width: calc(100% - $sidebarwidth - $margin);
+    height: calc(100% - $margintb * 4);
+    margin: $margintb $margin $margintb 0;
+    border-radius: 2rem;
+    overflow: auto;
+}

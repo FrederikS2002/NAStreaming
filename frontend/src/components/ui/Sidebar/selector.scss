@@ -1,0 +1,22 @@
+.selector {
+	position: absolute;
+    top: var(--offset);
+	right: -1px;
+    width: var(--width);
+    transform: translate(0, -50%);
+	& svg g {
+		fill: var(--foreground);
+	}
+
+	& .glow {
+		position: absolute;
+		left: 70%;
+		top: 50%;
+		transform: translate(0, -50%);
+		width: 30%;
+		height: 20%;
+		border-radius: 20rem;
+		background: var(--secondary-color);
+		box-shadow: 0 0 7px var(--secondary-color);
+	}
+}
