@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Selector from './svgs/selector.svelte';
-	import './selector.scss';
 	export let width: number;
 	export let offset: number;
 	export let style: string;
@@ -11,3 +10,6 @@
     <div class="glow" />
 </div>
 
+<style lang="scss">
+    @import 'selector.scss';
+</style>

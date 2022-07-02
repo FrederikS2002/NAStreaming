@@ -10,17 +10,19 @@
 	:root {
 		--background: rgb(25,25,35);
 		--foreground: rgb(35,35,45);
+		--forforground: rgb(45,45,55);
 		--primary-color: rgb(255, 255, 255);
-		--theme-color: rgb(247, 166, 36);
+		--primary-theme-color: rgb(247, 166, 36);
 		--secondary-color: rgb(100, 100, 110);
 	}
 }
 @media (prefers-color-scheme: light) {
 	:root {
-		--background: rgb(248,248,252);
-		--foreground: rgb(255,255,255);
+		--background: rgb(238,238,242);
+		--foreground: rgb(245,245,245);
+		--forforground: rgb(255,255,255);
 		--primary-color: rgb(0,0,0);
-		--theme-color: rgb(247, 166, 36);
+		--primary-theme-color: rgb(247, 166, 36);
 		--secondary-color: rgb(185, 185, 185);
 	}
 }

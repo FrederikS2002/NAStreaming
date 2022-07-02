@@ -1,5 +1,4 @@
-<script lang="ts">
-    import './index.scss';
-</script>
 <div class="container">
+    <slot />
 </div>
+<style lang="scss">@import 'index.scss'; </style>

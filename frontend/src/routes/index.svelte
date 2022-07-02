@@ -1,9 +1,6 @@
 <script>
-import Services from "../components/ui/Sidebar/Services.svelte";
-import Background from "../components/ui/Background/index.svelte";
-
-
 </script>
-
-<Services />
-<Background />
+<head>
+    <title>NAStreaming</title>
+</head>
+<div>test</div>

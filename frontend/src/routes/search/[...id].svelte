@@ -28,3 +28,6 @@
 </script>
 
 <SearchMovieMenu {movies} />
+<head>
+    <title>NAStreaming - Search</title>
+</head>
