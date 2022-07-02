@@ -1,0 +1,20 @@
+@import 'variables.scss';
+
+.themed {
+    --border: none;
+    --background: var(--background-l3);
+    --placeholderColor: var(--secondary-color);
+    --listBackground: var(--background-l3);
+    --itemColor: var(--secondary-color);
+    --itemBackgorund: var(--background-l3);
+    --itemHoverColor: var(--primary-color);
+    --itemHoverBG: var(--background-l4);
+    --itemIsActiveBG: var(--primary-theme-color);
+    --borderRadius: #{$border_radius};
+    --listBorderRadius: #{$border_radius};
+    --inputColor: var(--primary-color);
+    --inputFontSize: #{$font_size};
+    --placeholderColor: var(--secondary-color);
+    height: $height;
+    width: 50%;
+}

@@ -13,5 +13,5 @@
 </div>
 
 <style lang="scss">
-	@import 'style.scss';
+	@import 'inputs.scss';
 </style>

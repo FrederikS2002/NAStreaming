@@ -9,8 +9,9 @@
 @media (prefers-color-scheme: dark) {
 	:root {
 		--background: rgb(25,25,35);
-		--foreground: rgb(35,35,45);
-		--forforground: rgb(45,45,55);
+		--background-l2: rgb(35,35,45);
+		--background-l3: rgb(45,45,55);
+		--background-l4: rgb(55,55,65);
 		--primary-color: rgb(255, 255, 255);
 		--primary-theme-color: rgb(247, 166, 36);
 		--secondary-color: rgb(100, 100, 110);
@@ -18,9 +19,10 @@
 }
 @media (prefers-color-scheme: light) {
 	:root {
-		--background: rgb(238,238,242);
-		--foreground: rgb(245,245,245);
-		--forforground: rgb(255,255,255);
+		--background: rgb(228,228,232);
+		--background-l2: rgb(235,235,235);
+		--background-l3: rgb(245,245,245);
+		--background-l4: rgb(255,255,255);
 		--primary-color: rgb(0,0,0);
 		--primary-theme-color: rgb(247, 166, 36);
 		--secondary-color: rgb(185, 185, 185);

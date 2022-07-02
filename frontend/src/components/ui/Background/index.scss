@@ -6,7 +6,7 @@
     position: fixed;
     right: 0;
     top: 0;
-    background: var(--foreground);
+    background: var(--background-l2);
     width: calc(100% - $sidebarwidth - $margin);
     height: calc(100% - $margintb * 4);
     margin: $margintb $margin $margintb 0;

@@ -38,6 +38,7 @@
   },
   "type": "module",
   "dependencies": {
-    "sass": "^1.52.1"
+    "sass": "^1.52.1",
+    "svelte-select": "^4.4.7"
   }
 }
