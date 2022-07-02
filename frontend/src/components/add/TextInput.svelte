@@ -1,7 +1,7 @@
 <script lang="ts">
-	export let placeholder: any;
-	export let value = '';
-	export let number = false;
+	export let placeholder: string;
+	export let value:string = '';
+	export let number:boolean = false;
 </script>
 
 <div class="tag_input">
@@ -13,5 +13,5 @@
 </div>
 
 <style lang="scss">
-	@import 'inputs.scss';
+	@import 'inputtext.scss';
 </style>

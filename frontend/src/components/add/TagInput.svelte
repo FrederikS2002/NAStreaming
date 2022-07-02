@@ -1,7 +1,9 @@
 <script lang="ts">
-	export let placeholder: any;
+	export let placeholder: string;
 	export let value: string[] = [];
+
 	let input = '';
+
 	const handleKeypress = (e: KeyboardEvent) => {
 		if (e.key === 'Enter') {
 			value.push(input);
@@ -9,6 +11,7 @@
 			value = [...value];
 		}
 	};
+
 	const removeValue = (index: number) => {
 		value.splice(index, 1);
 		value = [...value];
@@ -28,5 +31,5 @@
 </div>
 
 <style lang="scss">
-	@import 'inputs.scss';
+	@import 'inputtags.scss';
 </style>
