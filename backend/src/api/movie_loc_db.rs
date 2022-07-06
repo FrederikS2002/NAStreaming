@@ -45,6 +45,7 @@ async fn epi_data(payload: Path<EpiDataReciver>, services: Data<Services>) -> Js
             })
         }
     };
+    println!("{:#?}", loc);
     let next = services
         .get_movie_filelocation_service()
         .show_next_movie(loc.movie.clone(), loc.epi)

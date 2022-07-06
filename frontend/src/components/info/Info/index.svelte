@@ -6,20 +6,31 @@
 	import OptionBarEdit from '../OptionBar/edit.svelte';
 	import Details from '../Details.svelte';
 	import Related from '../Related.svelte';
-	import EpisodesEdit from '../EpisodesEdit.svelte';
 	import DetailsEdit from '../DetailsEdit.svelte';
 	import RelatedEdit from '../RelatedEdit.svelte';
-	import Episodes from '../episodes.svelte';
+	import EpiListNormal from '../List/EpiListNormal.svelte';
+	import EpiListSort from '../List/EpiListSort.svelte';
+	import { edit_mode_sub } from '../store';
+	import { startUpload } from '../upload';
 
 	export let movies: any;
 	let mode: string;
 	let edit: boolean = false;
+	edit_mode_sub((v) => (edit = v));
 
 	$: console.log(mode, edit);
 
 	let top: HTMLImageElement | null;
 	$: top_height = top ? top.clientHeight : 0;
 
+	const save = async (old_mode: string) => {
+		console.log("test");
+		if (old_mode == 'episodes') {
+			await startUpload(movies.uuid);
+		} else if (old_mode == 'details') {
+		} else if (old_mode == 'related') {
+		}
+	};
 	setEpisodeData(movies.epilist);
 	setEpisodeOrderArr(generateOrder(movies.epilist));
 </script>
@@ -33,28 +44,28 @@
 		<div class="play" />
 		<div class="other">
 			<div class="trailer" />
-			<div class="fav" />	
+			<div class="fav" />
 		</div>
 	</div>
 </div>
 <div class="content">
 	{#if !edit}
-		<OptionBarNormal bind:mode bind:edit />
+		<OptionBarNormal bind:mode />
 	{:else}
-		<OptionBarEdit uuid={movies.uuid} bind:mode bind:edit />
+		<OptionBarEdit bind:mode {save}/>
 	{/if}
 
 	{#if mode}
 		{#if edit}
 			{#if mode == 'episodes'}
-				<EpisodesEdit />
+				<EpiListSort />
 			{:else if mode == 'details'}
 				<DetailsEdit />
 			{:else if mode == 'related'}
 				<RelatedEdit />
 			{/if}
 		{:else if mode == 'episodes'}
-			<Episodes />
+			<EpiListNormal />
 		{:else if mode == 'details'}
 			<Details />
 		{:else if mode == 'related'}

@@ -1,16 +1,22 @@
 <script lang="ts">
+	import { setEditMode } from '../store';
+
 	import DoneSvg from './svgs/done.svelte';
-	export let uuid: string;
 	export let single: boolean = false;
 	export let related: boolean = true;
+	
 	export let mode: string = single ? 'details' : 'episodes';
-	export let edit: boolean = false;
-	//TODO: admin
 
-	const save = (new_mode: string) => {
-		//TODO: save changes
+    export let save: any;
+
+	const update = async (new_mode: string) => {
+		await save(mode);
 		mode = new_mode;
 	};
+    const close = async () => {
+        await save(mode);
+        setEditMode(false);
+    }
 </script>
 
 <div class="options">
@@ -24,7 +30,7 @@
 		{/if}
 	</div>
 	<div class="right">
-		<div class="upload" on:click={(_) => (edit = false)}>
+		<div class="upload" on:click={(_) => close()}>
 			<DoneSvg />
 		</div>
 	</div>

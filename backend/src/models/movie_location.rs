@@ -10,8 +10,8 @@ pub struct MovieFileLoation {
     pub movie: String,
     title: String,
     pub epi: i32,
-    pub filename: String,
     description: String,
+    pub filename: String,
     thumb: String,
 }
 
@@ -80,7 +80,7 @@ pub struct NewMovieFileLoation {
     pub movie: String,
     pub epi: i32,
     pub title: String,
-    pub filename: String,
     pub description: String,
+    pub filename: String,
     pub thumb: String,
 }
