@@ -16,6 +16,7 @@
 
 	export let loggedIn = true;
 	$: routeId = $page.routeId;
+	$: console.log(routeId)
 	//restriction: n for no login, l for login, o for open, a for admin //TODO: add admin restriction
 	let json = {
 		icon: [
@@ -51,7 +52,7 @@
 				redirect: '/categories',
 				restriction: 'l'
 			},
-			{ name: 'Info', color: [255, 255, 255], routeid: 'info', redirect: null, restriction: 'lo' },
+			{ name: 'Info', color: [255, 255, 255], routeid: 'info/[id]', redirect: null, restriction: 'lo' },
 			{
 				name: 'Watchlist',
 				color: [240, 80, 80],
@@ -73,7 +74,7 @@
 		]
 	};
 
-	const filtering = (obj: any) => {
+	$: filtering = (obj: any) => {
 		return (
 			((obj.restriction.includes('l') && loggedIn) || !obj.restriction.includes('l')) &&
 			((obj.restriction.includes('o') && routeId == obj.routeid) || !obj.restriction.includes('o')) &&
@@ -118,7 +119,7 @@
 						<DiscoverIcon />
 					{:else if obj.routeid == 'categories'}
 						<CategoriesIcon />
-					{:else if obj.routeid == 'info'}
+					{:else if obj.routeid == 'info/[id]'}
 						<PlayIcon />
 					{:else if obj.routeid == 'watchlist'}
 						<HeartIcon />

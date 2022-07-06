@@ -2,8 +2,9 @@ $border_radius: 5px;
 $height: 3vh;
 $font_size: 14px;
 $padding: 1% 2%;
+$margin: 2% 0%;
 
-::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+::placeholder { 
     color: var(--secondary-color);
-    opacity: 1; /* Firefox */
+    opacity: 1;
 }

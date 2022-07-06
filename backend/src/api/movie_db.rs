@@ -82,7 +82,7 @@ async fn search_movie_empty(
     );
 }
 
-#[post("create_movie")]
+#[post("/create_movie/")]
 async fn create_movie(mut payload: Multipart, services: Data<Services>) -> Json<String> {
     //TODO: figure out to drop payload early to prevent error messages
     let uuid = Uuid::new_v4().to_string();

@@ -3,10 +3,10 @@ table! {
         id -> Integer,
         uuid -> Text,
         movie -> Text,
-        epi -> Integer,
         title -> Text,
-        filename -> Text,
+        epi -> Integer,
         description -> Text,
+        filename -> Text,
         thumb -> Text,
     }
 }

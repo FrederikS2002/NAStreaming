@@ -18,7 +18,6 @@ pub fn check_hashmap(services: Data<Services>) {
         }
     });
 }
-
 pub struct Services {
     conn: MysqlConnection,
     progress_hashmap: HashMap<String, MovieProgress>,
