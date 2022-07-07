@@ -1,4 +1,14 @@
 table! {
+    movie_details (id) {
+        id -> Integer,
+        uuid -> Text,
+        thumb -> Text,
+        icon -> Text,
+        description -> Text,
+    }
+}
+
+table! {
     movie_filelocations (id) {
         id -> Integer,
         uuid -> Text,
@@ -48,6 +58,7 @@ table! {
 }
 
 allow_tables_to_appear_in_same_query!(
+    movie_details,
     movie_filelocations,
     movie_progress,
     movie_relationships,
