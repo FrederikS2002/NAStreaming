@@ -1,4 +1,7 @@
 <div class="container">
-    <slot />
+	<slot />
 </div>
-<style lang="scss">@import 'index.scss'; </style>
+
+<style lang="scss">
+	@import 'index.scss';
+</style>

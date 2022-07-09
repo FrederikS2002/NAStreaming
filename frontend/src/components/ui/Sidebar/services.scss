@@ -1,23 +1,23 @@
 .sidebar_container {
-    z-index: 2;
-    position: fixed;
-    display: grid;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 3.5%;
+	z-index: 2;
+	position: fixed;
+	display: grid;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 3.5%;
 
-    align-content: space-between;
-    & .icon,
-    & .redirects,
-    & .user {
-        position: relative;
-        width: 100%;
-    }
-    & .icon {
-        margin-top: 20%;
-    }
-    & .user {
-        margin-bottom: 140%;
-    }
+	align-content: space-between;
+	& .icon,
+	& .redirects,
+	& .user {
+		position: relative;
+		width: 100%;
+	}
+	& .icon {
+		margin-top: 20%;
+	}
+	& .user {
+		margin-bottom: 140%;
+	}
 }

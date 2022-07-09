@@ -36,8 +36,7 @@ impl<'a> MovieService<'a> {
         Ok(movies
             .filter(uuid.eq(uuidc))
             .limit(1)
-            .load::<Movie>(self.conn)?) 
-
+            .load::<Movie>(self.conn)?)
     }
 
     pub fn show_page(&self, search: &str, page: i64, pagesize: i64) -> Result<Vec<Movie>> {

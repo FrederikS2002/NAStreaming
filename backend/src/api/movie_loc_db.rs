@@ -1,4 +1,5 @@
 use crate::{
+    errors::{ApiError, ApiErrrorType},
     handle_field::{create_file, extract_text, get_content_type, get_filename, get_name},
     models::movie_location::NewMovieFileLoation,
     services::Services,
@@ -28,42 +29,41 @@ struct EpiDataReciver {
     episode: String,
 }
 #[get("epi_data/{movie}/{episode}")]
-async fn epi_data(payload: Path<EpiDataReciver>, services: Data<Services>) -> Json<EpiData> {
-    println!("test");
+async fn epi_data(
+    payload: Path<EpiDataReciver>,
+    services: Data<Services>,
+) -> Result<Json<EpiData>, ApiError> {
     let loc = services
         .get_movie_filelocation_service()
         .show_movie_loc_single(payload.movie.clone(), payload.episode.clone())
-        .unwrap();
+        .map_err(ApiError::db_error)?;
     let loc = match loc.get(0) {
         Some(v) => v,
         None => {
-            return Json(EpiData {
-                movie: "".to_string(),
-                file: "".to_string(),
-                next: "".to_string(),
-                progress: 0,
-            })
+            return Err(ApiError::db_error("no movie in db"));
         }
     };
-    println!("{:#?}", loc);
     let next = services
         .get_movie_filelocation_service()
         .show_next_movie(loc.movie.clone(), loc.epi)
-        .unwrap();
+        .map_err(ApiError::db_error)?;
     let next = match next.get(0) {
         Some(v) => v.uuid.clone(),
         None => "".to_string(),
     };
-    return Json(EpiData {
+    Ok(Json(EpiData {
         movie: payload.movie.clone(),
         file: loc.filename.clone(),
         next,
         progress: 0,
-    });
+    }))
 }
 
 #[post("upload_episodes")]
-async fn upload_episodes(mut payload: Multipart, services: Data<Services>) -> Json<String> {
+async fn upload_episodes(
+    mut payload: Multipart,
+    services: Data<Services>,
+) -> Result<Json<String>, ApiError> {
     let uuid = Uuid::new_v4().to_string();
     let mut title = "".to_string();
     let mut fileupload = false;
@@ -74,21 +74,20 @@ async fn upload_episodes(mut payload: Multipart, services: Data<Services>) -> Js
     let mut filepath = None;
 
     while let Some(item) = payload.next().await {
-        let field = match item {
-            Ok(value) => value,
-            Err(_) => return Json("Couldn't parse form".to_string()),
-        };
+        let field = item.map_err(|err| ApiError {
+            message: Some("couldnt parse field".to_string()),
+            cause: Some(err.to_string()),
+            err_type: crate::errors::ApiErrrorType::ReadError,
+        })?;
         match get_content_type(&field).as_str() {
             "video/mp4" => {
                 if get_name(&field) == "file" {
                     filename = Some(format!("{}-{}", &uuid, get_filename(&field).unwrap()));
                     //TODO: Make sure that movie is known
                     filepath = Some(format!("static/movies/{}", movie.as_ref().unwrap()));
-                    match std::fs::create_dir_all(&filepath.as_ref().unwrap()) {
-                        Ok(_) => (),
-                        Err(err) => println!("{:?}", err),
-                    }
-                    match create_file(
+                    std::fs::create_dir_all(&filepath.as_ref().unwrap())
+                        .map_err(ApiError::write_error)?;
+                    create_file(
                         field,
                         format!(
                             "{}/{}",
@@ -97,22 +96,18 @@ async fn upload_episodes(mut payload: Multipart, services: Data<Services>) -> Js
                         ),
                     )
                     .await
-                    {
-                        Ok(_) => (),
-                        Err(err) => return Json(err),
-                    }
-
+                    .map_err(ApiError::write_error)?;
                     fileupload = true;
                 } else {
-                    return Json("Invalid input".to_string());
+                    return Err(ApiError::invalid_input_error(format!(
+                        "expeced file found => {}",
+                        get_name(&field)
+                    )));
                 }
             }
             "application/octet-stream" => match get_name(&field).as_str() {
                 "movie" => {
-                    movie = match extract_text(field).await {
-                        Ok(value) => Some(value),
-                        Err(err) => return Json(err.to_string()),
-                    }
+                    movie = Some(extract_text(field).await.map_err(ApiError::read_error)?);
                 }
                 "epi" => {
                     epi = match extract_text(field).await {
@@ -120,31 +115,32 @@ async fn upload_episodes(mut payload: Multipart, services: Data<Services>) -> Js
                             if value.parse::<i32>().is_ok() {
                                 value.parse::<i32>().unwrap()
                             } else {
-                                return Json("Invalid inpu".to_string());
+                                return Err(ApiError::invalid_input_error(
+                                    "expected integer found => string".to_string(),
+                                ));
                             }
                         }
-                        Err(err) => return Json(err.to_string()),
+                        Err(err) => return Err(ApiError::read_error(err)),
                     }
                 }
                 "name" => {
-                    title = match extract_text(field).await {
-                        Ok(value) => value,
-                        Err(err) => return Json(err.to_string()),
-                    }
+                    title = extract_text(field).await.map_err(ApiError::read_error)?;
                 }
                 "description" => {
-                    description = match extract_text(field).await {
-                        Ok(value) => value,
-                        Err(err) => return Json(err.to_string()),
-                    }
+                    description = extract_text(field).await.map_err(ApiError::read_error)?;
                 }
                 _ => {
-                    return Json("Invalid input".to_string());
+                    return Err(ApiError::invalid_input_error(format!(
+                        "unexpected input type => {}",
+                        get_content_type(&field)
+                    )))
                 }
             },
             _ => {
-                println!("type: {}", get_content_type(&field));
-                return Json("Invalid input".to_string());
+                return Err(ApiError::invalid_input_error(format!(
+                    "unexpected input type => {}",
+                    get_content_type(&field)
+                )))
             }
         }
     }
@@ -152,7 +148,7 @@ async fn upload_episodes(mut payload: Multipart, services: Data<Services>) -> Js
     if fileupload && epi != 0 && matches!(&movie, Some(_value)) && matches!(&filename, Some(_value))
     {
         //TODO: Delete file on error db error
-        match services
+        services
             .get_movie_filelocation_service()
             .add(NewMovieFileLoation {
                 uuid,
@@ -162,17 +158,19 @@ async fn upload_episodes(mut payload: Multipart, services: Data<Services>) -> Js
                 filename: filename.unwrap(),
                 description,
                 thumb: "".to_string(),
-            }) {
-            Ok(_) => return Json("200".to_string()),
-            Err(err) => return Json(err.to_string()),
-        }
+            })
+            .map_err(ApiError::db_error)?;
+        Ok(Json("upload complete".to_string()))
     } else {
         if fileupload {
-            match remove_file(format!("{}/{}", &filepath.unwrap(), &filename.unwrap())) {
-                Ok(_) => (),
-                Err(e) => return Json(format!("failed to cleanup cover for uuid {}  {}", uuid, e)),
-            }
+            remove_file(format!("{}/{}", &filepath.unwrap(), &filename.unwrap())).map_err(|err| ApiError {
+                message: Some(format!("failed to cleanup cover for uuid {}", uuid)),
+                cause: Some(err.to_string()),
+                err_type: ApiErrrorType::WriteError,
+            })?;
+
         }
-        return Json("Payload inclompleted".to_string());
+        return Err(ApiError::invalid_input_error("Payload inclompleted".to_string()));
+        
     }
 }

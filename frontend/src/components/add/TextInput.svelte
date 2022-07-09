@@ -1,7 +1,7 @@
 <script lang="ts">
 	export let placeholder: string;
-	export let value:string = '';
-	export let number:boolean = false;
+	export let value: string = '';
+	export let number: boolean = false;
 </script>
 
 <div class="tag_input">

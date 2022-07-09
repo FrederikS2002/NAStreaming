@@ -1,12 +1,12 @@
 import { create_movie, url } from '../urls';
-type temp = {success: boolean, data: any};
+type temp = { success: boolean; data: any };
 export async function createMovie(
 	titles: string[] | undefined,
 	categories: string[] | undefined,
 	type_: { value: string; label: string } | null,
 	age_restriction: string | undefined,
 	cover: FileList | undefined
-) : Promise<temp>{
+): Promise<temp> {
 	const data = new FormData();
 	if (titles) data.append('titles', mkRd(titles));
 	if (categories) data.append('categories', mkRd(categories));
@@ -18,15 +18,14 @@ export async function createMovie(
 			method: 'post',
 			//make sure to serialize your JSON body
 			body: data
-		})
+		});
 		const json = await req.json();
-		if(json == "200") {
+		if (json == '200') {
 			return { success: true, data: data };
-		}else {
+		} else {
 			return { success: false, data: data };
-
 		}
-	}catch (e) {
+	} catch (e) {
 		return { success: false, data: e };
 	}
 }

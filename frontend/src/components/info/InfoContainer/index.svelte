@@ -12,8 +12,8 @@
 		titles: movies.titles,
 		icon: movies.icon,
 		thumb: movies.thumb,
-		color: movies.color,
-		description: movies.description
+		description: movies.description,
+		trailer: movies.trailer
 	});
 	let edit = false;
 	edit_mode_sub((v) => (edit = v));

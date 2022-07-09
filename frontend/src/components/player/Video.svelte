@@ -1,11 +1,11 @@
 <script lang="ts">
-import { onDestroy } from 'svelte';
+	import { onDestroy } from 'svelte';
 
-import { file_location, url } from '../urls';
-import { epi_data_sub } from './stores/request';
+	import { file_location, url } from '../urls';
+	import { epi_data_sub } from './stores/request';
 
 	import { bindVideoData, videoSubscribe } from './stores/video';
-import type { EpisodeData } from './types';
+	import type { EpisodeData } from './types';
 	import './video.scss';
 
 	let currentTime = 0;
@@ -20,15 +20,8 @@ import type { EpisodeData } from './types';
 	onDestroy(epi_data_sub((value) => (data = value)));
 </script>
 
-<video
-	bind:currentTime
-	bind:duration
-	bind:paused
-	bind:this={video}
-	poster=""
-	preload="metadata"
->
-	<source src={url + file_location + data.movie + "/" +data.file} type="video/mp4" />
+<video bind:currentTime bind:duration bind:paused bind:this={video} poster="" preload="metadata">
+	<source src={url + file_location + data.movie + '/' + data.file} type="video/mp4" />
 	Your browser does not support the video tag.
 	<track kind="captions" />
 </video>

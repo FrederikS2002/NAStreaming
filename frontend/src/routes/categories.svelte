@@ -1,3 +1,3 @@
 <head>
-    <title>NAStreaming - Categories</title>
+	<title>NAStreaming - Categories</title>
 </head>

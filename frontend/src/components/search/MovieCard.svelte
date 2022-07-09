@@ -2,7 +2,7 @@
 	import { cover_location, url } from '../urls';
 	import type { movie } from './types';
 	export let movie: movie;
-	let title = movie.titles.split(",")[1];
+	let title = movie.titles.split(',')[1];
 </script>
 
 <a sveltekit:noscroll sveltekit:prefetch href={'/info/' + movie.uuid}

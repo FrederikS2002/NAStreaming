@@ -9,4 +9,6 @@
 	/></svg
 >
 
-<style lang="scss">@import 'styling.scss';</style>
+<style lang="scss">
+	@import 'styling.scss';
+</style>

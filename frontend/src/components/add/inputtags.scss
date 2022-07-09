@@ -1,19 +1,19 @@
 @import 'inputtext.scss';
 
-.tag_input  div {
-    display: inline-block;
-    padding: 0.5% 1%;
-    margin: 0 0.5%;
-    background-color: (var(--primary-color));
-    color: var(--background-l3);
-    border-radius: 3px;
-    & div {
-        display: flex;
-    }
-    & .x {
-        display: inline-block;
-        margin-left: 5%;
-        color: red;
-        cursor: pointer;
-    }
+.tag_input div {
+	display: inline-block;
+	padding: 0.5% 1%;
+	margin: 0 0.5%;
+	background-color: (var(--primary-color));
+	color: var(--background-l3);
+	border-radius: 3px;
+	& div {
+		display: flex;
+	}
+	& .x {
+		display: inline-block;
+		margin-left: 5%;
+		color: red;
+		cursor: pointer;
+	}
 }

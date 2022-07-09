@@ -1,53 +1,53 @@
 @import 'variables.scss';
 
 .themed {
-    --border: none;
-    --background: var(--background-l3);
-    --placeholderColor: var(--secondary-color);
-    --listBackground: var(--background-l3);
-    --itemColor: var(--secondary-color);
-    --itemBackgorund: var(--background-l3);
-    --itemHoverColor: var(--primary-color);
-    --itemHoverBG: var(--background-l4);
-    --itemIsActiveBG: var(--primary-theme-color);
-    --borderRadius: #{$border_radius};
-    --listBorderRadius: #{$border_radius};
-    --inputColor: var(--primary-color);
-    --inputFontSize: #{$font_size};
-    --placeholderColor: var(--secondary-color);
-    height: $height;
-    margin: 1.1% 0%;
-    --height: calc(#{$height} + 1vh);
+	--border: none;
+	--background: var(--background-l3);
+	--placeholderColor: var(--secondary-color);
+	--listBackground: var(--background-l3);
+	--itemColor: var(--secondary-color);
+	--itemBackgorund: var(--background-l3);
+	--itemHoverColor: var(--primary-color);
+	--itemHoverBG: var(--background-l4);
+	--itemIsActiveBG: var(--primary-theme-color);
+	--borderRadius: #{$border_radius};
+	--listBorderRadius: #{$border_radius};
+	--inputColor: var(--primary-color);
+	--inputFontSize: #{$font_size};
+	--placeholderColor: var(--secondary-color);
+	height: $height;
+	margin: 1.1% 0%;
+	--height: calc(#{$height} + 1vh);
 }
 
 .menu {
-    display: flex;
+	display: flex;
 }
 .text {
-    width: calc(100% / 4 * 3);
+	width: calc(100% / 4 * 3);
 }
 .preview {
-    width: calc(100% / 4);
+	width: calc(100% / 4);
 }
 .oneline {
-    display: flex;
+	display: flex;
 }
 .parts {
-    width: calc(100% / 2);
+	width: calc(100% / 2);
 }
 .submit {
-    margin: 2% 0%;
-    position: relative;
-    width: 100%;
-    padding: 1% 2%;
-    background: var(--primary-theme-color);
-    height: 4vh;
-    border-radius: 4px;
-    color: white;
-    text-align: center;
-    cursor: pointer;
+	margin: 2% 0%;
+	position: relative;
+	width: 100%;
+	padding: 1% 2%;
+	background: var(--primary-theme-color);
+	height: 4vh;
+	border-radius: 4px;
+	color: white;
+	text-align: center;
+	cursor: pointer;
 }
 .disabled {
-    cursor: default;
-    background: var(--background-l3);
+	cursor: default;
+	background: var(--background-l3);
 }

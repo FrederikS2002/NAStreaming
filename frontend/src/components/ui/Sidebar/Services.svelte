@@ -16,7 +16,7 @@
 
 	export let loggedIn = true;
 	$: routeId = $page.routeId;
-	$: console.log(routeId)
+	$: console.log(routeId);
 	//restriction: n for no login, l for login, o for open, a for admin //TODO: add admin restriction
 	let json = {
 		icon: [
@@ -27,7 +27,7 @@
 				routeid: 'add',
 				redirect: '/add',
 				restriction: 'la'
-			},
+			}
 		],
 		redirects: [
 			{ name: 'Home', color: [249, 230, 80], routeid: '', redirect: '/', restriction: 'l' },
@@ -52,7 +52,13 @@
 				redirect: '/categories',
 				restriction: 'l'
 			},
-			{ name: 'Info', color: [255, 255, 255], routeid: 'info/[id]', redirect: null, restriction: 'lo' },
+			{
+				name: 'Info',
+				color: [255, 255, 255],
+				routeid: 'info/[id]',
+				redirect: null,
+				restriction: 'lo'
+			},
 			{
 				name: 'Watchlist',
 				color: [240, 80, 80],
@@ -69,15 +75,15 @@
 				routeid: 'settings',
 				redirect: '/settings',
 				restriction: 'l'
-			},
-			
+			}
 		]
 	};
 
 	$: filtering = (obj: any) => {
 		return (
 			((obj.restriction.includes('l') && loggedIn) || !obj.restriction.includes('l')) &&
-			((obj.restriction.includes('o') && routeId == obj.routeid) || !obj.restriction.includes('o')) &&
+			((obj.restriction.includes('o') && routeId == obj.routeid) ||
+				!obj.restriction.includes('o')) &&
 			((obj.restriction.includes('n') && !loggedIn) || !obj.restriction.includes('n')) &&
 			((obj.restriction.includes('e') && $page.error != null) || !obj.restriction.includes('e'))
 		);
@@ -96,7 +102,7 @@
 				>
 					{#if obj.routeid == 'error'}
 						<ErrorIcon />
-						{:else if obj.routeid == 'add'}
+					{:else if obj.routeid == 'add'}
 						<AddIcon />
 					{/if}
 				</Icon>
@@ -107,7 +113,7 @@
 		{#each json.redirects as obj}
 			{#if filtering(obj)}
 				<Icon
-					active={(obj.routeid == routeId && $page.error == null)}
+					active={obj.routeid == routeId && $page.error == null}
 					color={obj.color}
 					on:click={(_) => (obj.redirect ? goto(obj.redirect) : _)}
 				>
@@ -132,7 +138,7 @@
 		{#each json.user as obj}
 			{#if filtering(obj)}
 				<Icon
-					active={((obj.routeid == routeId || !loggedIn) && $page.error == null)}
+					active={(obj.routeid == routeId || !loggedIn) && $page.error == null}
 					color={obj.color}
 					on:click={(_) => (obj.redirect ? goto(obj.redirect) : _)}
 				>
@@ -147,4 +153,6 @@
 	</div>
 </div>
 
-<style lang="scss">@import 'services.scss';</style>
+<style lang="scss">
+	@import 'services.scss';
+</style>

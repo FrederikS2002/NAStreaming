@@ -1,5 +1,5 @@
 <script context="module" lang="ts">
-	import {url} from '../../components/urls';
+	import { url } from '../../components/urls';
 	export async function load({ fetch, params }: any) {
 		const ids = params.id;
 		if (ids.split('/').length > 1) {
@@ -29,5 +29,5 @@
 
 <SearchMovieMenu {movies} />
 <head>
-    <title>NAStreaming - Search</title>
+	<title>NAStreaming - Search</title>
 </head>

@@ -1,19 +1,11 @@
-export interface Epilist {
-	uuid: string;
-	epi: number;
-	title: string;
-	description: string;
-	thumb: string;
-}
-
 export interface RootObj {
 	uuid: string;
 	titles: string[];
 	icon: string;
 	thumb: string;
-	color: number[];
+	trailer: string;
 	description: string;
-	epilist: Epilist[];
+	epilist: episodeData[];
 }
 
 export interface baseData {
@@ -21,7 +13,7 @@ export interface baseData {
 	titles: string[];
 	icon: string;
 	thumb: string;
-	color: number[];
+	trailer: string;
 	description: string;
 }
 

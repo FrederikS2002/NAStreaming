@@ -1,4 +1,6 @@
-use crate::models::{movie_location::MovieFileLoationService, movies::MovieService};
+use crate::models::{
+    movie_detail::MovieDetailService, movie_location::MovieFileLoationService, movies::MovieService,
+};
 use actix_web::{
     rt::{spawn, time},
     web::Data,
@@ -33,11 +35,15 @@ impl Services {
     }
 
     pub fn get_movie_service(&self) -> MovieService {
-        return MovieService { conn: &self.conn}
+        return MovieService { conn: &self.conn };
     }
 
     pub fn get_movie_filelocation_service(&self) -> MovieFileLoationService {
-        return MovieFileLoationService { conn: &self.conn }
+        return MovieFileLoationService { conn: &self.conn };
+    }
+
+    pub fn get_movie_details_service(&self) -> MovieDetailService {
+        return MovieDetailService { conn: &self.conn };
     }
 
     pub fn update(&mut self, user: String, episode: String, time: u64) -> () {

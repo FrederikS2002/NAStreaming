@@ -1,6 +1,6 @@
-use crate::services::Services;
+use crate::{errors::ApiError, models::movie_detail::MovieDetails, services::Services};
 use actix_web::{get, web::Data, web::Json, web::Path, HttpResponse, Responder, Result};
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Debug)]
 struct MovieInfoData {
@@ -8,7 +8,6 @@ struct MovieInfoData {
     titles: Vec<String>,
     icon: String,
     thumb: String,
-    color: [u8; 3],
     description: String,
     epilist: Vec<MovieInfoEpi>,
 }
@@ -26,7 +25,7 @@ struct MovieInfoEpi {
 async fn movie_detail(
     search_identifier: Path<String>,
     services: Data<Services>,
-) -> Result<impl Responder, actix_web::Error> {
+) -> Result<impl Responder, ApiError> {
     let movie = services
         .get_movie_service()
         .show_uuid(search_identifier.to_string());
@@ -39,22 +38,31 @@ async fn movie_detail(
             .collect::<Vec<String>>(),
         None => vec!["".to_string()],
     };
-    let icon = "https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/F180E12F2C8DAC50ACCD15197541CAEE53509C068E977C8F8EA8B5F962073994/scale?width=1920&aspectRatio=1.78&format=png".to_string();
-    let thumb = "https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/DB7CE36F697D9269E5B6E649CE6E963E1A1C4BDF37A529AAD2B5B3395164FABF/scale?width=2880&aspectRatio=1.78&format=jpeg".to_string();
-    let color = [0, 0, 35];
-    let description = "abcd".to_string();
-    let epilist_temp = services.get_movie_filelocation_service().show_movie_loc_multi(search_identifier.to_string()).unwrap();
-    let epilist:Vec<MovieInfoEpi> =  serde_json::from_str(&serde_json::to_string(&epilist_temp).unwrap()).unwrap();
+    let detailstemp = services
+        .get_movie_details_service()
+        .get(search_identifier.to_string())
+        .map_err(ApiError::db_error)?;
+    let details = match detailstemp.get(0) {
+        Some(v) => v,
+        None => return Err(ApiError::db_error("no movie in db")),
+    };
+    let epilist_temp = services
+        .get_movie_filelocation_service()
+        .show_movie_loc_multi(search_identifier.to_string())
+        .map_err(ApiError::db_error)?;
+    let epilist: Vec<MovieInfoEpi> =
+        serde_json::from_str(&serde_json::to_string(&epilist_temp).unwrap()).unwrap();
     drop(epilist_temp);
+    let icon = &details.icon.clone();
+    let thumb = &details.thumb.clone();
+    let description = &details.description.clone();
     let json = Json(MovieInfoData {
         uuid: search_identifier.to_string(),
         titles,
-        icon,
-        thumb,
-        color,
-        description,
+        icon: icon.to_string(),
+        thumb: thumb.to_string(),
+        description: description.to_string(),
         epilist,
     });
     Ok(json)
-    // return HttpResponse::Ok().body(
 }

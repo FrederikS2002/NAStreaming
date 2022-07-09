@@ -15,6 +15,7 @@ mod models;
 mod mysql;
 mod schema;
 mod services;
+mod errors;
 
 async fn covers(req: HttpRequest) -> Result<NamedFile> {
     let mut path = PathBuf::from(format!(

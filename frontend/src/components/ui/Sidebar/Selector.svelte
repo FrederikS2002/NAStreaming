@@ -5,11 +5,11 @@
 	export let style: string;
 </script>
 
-<div class="selector" style="--width: {width}px; --offset: {offset}px;{style}" >
+<div class="selector" style="--width: {width}px; --offset: {offset}px;{style}">
 	<Selector />
-    <div class="glow" />
+	<div class="glow" />
 </div>
 
 <style lang="scss">
-    @import 'selector.scss';
+	@import 'selector.scss';
 </style>

@@ -1,6 +1,7 @@
 <script>
 </script>
+
 <head>
-    <title>NAStreaming</title>
+	<title>NAStreaming</title>
 </head>
 <div>test</div>

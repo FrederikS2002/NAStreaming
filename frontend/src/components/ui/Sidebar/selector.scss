@@ -1,9 +1,9 @@
 .selector {
 	position: absolute;
-    top: var(--offset);
+	top: var(--offset);
 	right: -1px;
-    width: var(--width);
-    transform: translate(0, -50%);
+	width: var(--width);
+	transform: translate(0, -50%);
 	color: var(--background-l2);
 
 	& .glow {

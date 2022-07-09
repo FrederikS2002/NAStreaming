@@ -1,7 +1,7 @@
 <script lang="ts">
 	import EditSvg from './svgs/edit.svelte';
 	import AddSvg from './svgs/add.svelte';
-import { setEditMode } from '../store';
+	import { setEditMode } from '../store';
 
 	export let single: boolean = false;
 	export let related: boolean = true;
@@ -22,7 +22,8 @@ import { setEditMode } from '../store';
 	</div>
 	<div class="right">
 		{#if admin}
-			<div class="add" on:click={(_) => _ }> <!-- TODO: link add button-->
+			<div class="add" on:click={(_) => _}>
+				<!-- TODO: link add button-->
 				<AddSvg />
 			</div>
 			<div class="edit" on:click={(_) => setEditMode(true)}>

@@ -27,10 +27,10 @@ const generateFML = (index: number, length: number) => {
 
 const generateUrl = (epi: number) => {
 	let temp: any;
-	base_data_sub(v => temp = v);
+	base_data_sub((v) => (temp = v));
 	let uuid: string = '';
 	epi_sub((v) => (uuid = v.filter((v) => v.epi === epi)[0].uuid));
-	return play + temp.uuid + "/" + uuid;
+	return play + temp.uuid + '/' + uuid;
 };
 
 const oorb = (

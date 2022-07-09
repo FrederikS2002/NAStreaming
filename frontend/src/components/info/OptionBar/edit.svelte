@@ -4,19 +4,19 @@
 	import DoneSvg from './svgs/done.svelte';
 	export let single: boolean = false;
 	export let related: boolean = true;
-	
+
 	export let mode: string = single ? 'details' : 'episodes';
 
-    export let save: any;
+	export let save: any;
 
 	const update = async (new_mode: string) => {
 		await save(mode);
 		mode = new_mode;
 	};
-    const close = async () => {
-        await save(mode);
-        setEditMode(false);
-    }
+	const close = async () => {
+		await save(mode);
+		setEditMode(false);
+	};
 </script>
 
 <div class="options">

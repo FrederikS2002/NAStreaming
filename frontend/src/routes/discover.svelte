@@ -1,3 +1,3 @@
 <head>
-    <title>NAStreaming - Discover</title>
+	<title>NAStreaming - Discover</title>
 </head>

@@ -1,3 +1,3 @@
 <head>
-    <title>NAStreaming - Settings</title>
+	<title>NAStreaming - Settings</title>
 </head>

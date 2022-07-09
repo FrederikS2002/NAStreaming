@@ -2,7 +2,7 @@
 	import { loop_guard } from 'svelte/internal';
 	export let color: number[];
 	export let active = false;
-    import './icon.scss';
+	import './icon.scss';
 	import Selector from './Selector.svelte';
 	let data: any | HTMLDivElement;
 </script>

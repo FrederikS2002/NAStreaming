@@ -12,8 +12,10 @@
 	import EpiListSort from '../List/EpiListSort.svelte';
 	import { edit_mode_sub } from '../store';
 	import { startUpload } from '../upload';
+	import type { RootObj } from '../types';
+	import Upload from './upload.svelte';
 
-	export let movies: any;
+	export let movies: RootObj;
 	let mode: string;
 	let edit: boolean = false;
 	edit_mode_sub((v) => (edit = v));
@@ -24,7 +26,7 @@
 	$: top_height = top ? top.clientHeight : 0;
 
 	const save = async (old_mode: string) => {
-		console.log("test");
+		console.log('test');
 		if (old_mode == 'episodes') {
 			await startUpload(movies.uuid);
 		} else if (old_mode == 'details') {
@@ -35,24 +37,32 @@
 	setEpisodeOrderArr(generateOrder(movies.epilist));
 </script>
 
-<div class="thumb" on:scroll={onScroll}>
-	<img src={movies.thumb} alt="" bind:this={top} />
-	<div class="over_thumb" style={'height: ' + top_height + 'px'}>
-		<img src={movies.icon} alt="" draggable="false" />
-		<div class="infos" />
-		<div class="categories" />
-		<div class="play" />
-		<div class="other">
-			<div class="trailer" />
-			<div class="fav" />
+{#if movies.icon && movies.thumb}
+	<div class="thumb" on:scroll={onScroll}>
+		<img src={movies.thumb} alt="" bind:this={top} />
+		<div class="over_thumb" style={'height: ' + top_height + 'px'}>
+			<img src={movies.icon} alt="" draggable="false" />
+			<div class="infos" />
+			<div class="categories" />
+			<div class="play" />
+			<div class="other">
+				<div class="trailer" />
+				<div class="fav" />
+			</div>
 		</div>
 	</div>
-</div>
+{:else}
+	<div class="thumb_upload">
+		<Upload uuid={movies.uuid} classs="upload_thumb_btn" />
+		<Upload uuid={movies.uuid} classs="upload_icon_btn" />
+		<Upload uuid={movies.uuid} classs="add_trailer" />
+	</div>
+{/if}
 <div class="content">
 	{#if !edit}
 		<OptionBarNormal bind:mode />
 	{:else}
-		<OptionBarEdit bind:mode {save}/>
+		<OptionBarEdit bind:mode {save} />
 	{/if}
 
 	{#if mode}
@@ -76,4 +86,8 @@
 
 <style lang="scss">
 	@import 'index.scss';
+	.thumb_upload {
+		width: 100%;
+		height: 100%;
+	}
 </style>

@@ -1,3 +1,4 @@
+use crate::errors::{ApiError, ApiErrrorType};
 use crate::handle_field::{create_file, extract_text, get_content_type, get_name};
 use crate::models::movies::{Movie, NewMovie};
 use crate::services::Services;
@@ -52,38 +53,39 @@ impl EmptySerach {
 async fn search_movie(
     search_identifier: Path<SearchIdentifier>,
     services: Data<Services>,
-) -> Json<Vec<Movie>> {
-    return Json(
-        services
-            .get_movie_service()
-            .show_page(
-                &search_identifier.get_query(),
-                search_identifier.get_page(),
-                search_identifier.get_limit(),
-            )
-            .unwrap(),
-    );
+) -> Result<Json<Vec<Movie>>, ApiError> {
+    let req = services
+        .get_movie_service()
+        .show_page(
+            &search_identifier.get_query(),
+            search_identifier.get_page(),
+            search_identifier.get_limit(),
+        )
+        .map_err(ApiError::db_error)?;
+    Ok(Json(req))
 }
 
 #[get("/search_movie/{page}/{limit}")]
 async fn search_movie_empty(
     search_identifier: Path<EmptySerach>,
     services: Data<Services>,
-) -> Json<Vec<Movie>> {
-    return Json(
-        services
-            .get_movie_service()
-            .show_page(
-                "",
-                search_identifier.get_page(),
-                search_identifier.get_limit(),
-            )
-            .unwrap(),
-    );
+) -> Result<Json<Vec<Movie>>, ApiError> {
+    let req = services
+        .get_movie_service()
+        .show_page(
+            "",
+            search_identifier.get_page(),
+            search_identifier.get_limit(),
+        )
+        .map_err(ApiError::db_error)?;
+    Ok(Json(req))
 }
 
 #[post("/create_movie/")]
-async fn create_movie(mut payload: Multipart, services: Data<Services>) -> Json<String> {
+async fn create_movie(
+    mut payload: Multipart,
+    services: Data<Services>,
+) -> Result<Json<String>, ApiError> {
     //TODO: figure out to drop payload early to prevent error messages
     let uuid = Uuid::new_v4().to_string();
     let mut type_ = None;
@@ -93,40 +95,36 @@ async fn create_movie(mut payload: Multipart, services: Data<Services>) -> Json<
     let mut fileupload = false;
 
     while let Some(item) = payload.next().await {
-        let field = match item {
-            Ok(value) => value,
-            Err(_) => return Json("Couldn't parse form".to_string()),
-        };
+        let field = item.map_err(|err| ApiError {
+            message: Some("couldnt parse field".to_string()),
+            cause: Some(err.to_string()),
+            err_type: crate::errors::ApiErrrorType::ReadError,
+        })?;
+
         match get_content_type(&field).as_str() {
             "image/jpeg" => {
                 if get_name(&field) == "cover" {
                     let filepath = format!("static/covers/{}.jpeg", &uuid);
                     match create_file(field, filepath).await {
                         Ok(_) => fileupload = true,
-                        Err(err) => return Json(err),
+                        Err(err) => return Err(ApiError::write_error(err)),
                     }
                 } else {
-                    return Json("Invalid input".to_string());
+                    return Err(ApiError::invalid_input_error(format!(
+                        "expeced cover found => {}",
+                        get_name(&field)
+                    )));
                 }
             }
             "application/octet-stream" => match get_name(&field).as_str() {
                 "titles" => {
-                    titles = match extract_text(field).await {
-                        Ok(value) => Some(value),
-                        Err(err) => return Json(err.to_string()),
-                    }
+                    titles = Some(extract_text(field).await.map_err(ApiError::read_error)?);
                 }
                 "type" => {
-                    type_ = match extract_text(field).await {
-                        Ok(value) => Some(value),
-                        Err(err) => return Json(err.to_string()),
-                    }
+                    type_ = Some(extract_text(field).await.map_err(ApiError::read_error)?);
                 }
                 "categories" => {
-                    categories = match extract_text(field).await {
-                        Ok(value) => Some(value),
-                        Err(err) => return Json(err.to_string()),
-                    }
+                    categories = Some(extract_text(field).await.map_err(ApiError::read_error)?);
                 }
                 "age_restriction" => {
                     age_restriction = match extract_text(field).await {
@@ -134,17 +132,26 @@ async fn create_movie(mut payload: Multipart, services: Data<Services>) -> Json<
                             if value.parse::<i32>().is_ok() {
                                 value.parse::<i32>().unwrap()
                             } else {
-                                return Json("Invalid inpu".to_string());
+                                return Err(ApiError::invalid_input_error(
+                                    "expected integer found => string".to_string(),
+                                ));
                             }
                         }
-                        Err(err) => return Json(err.to_string()),
+                        Err(err) => return Err(ApiError::read_error(err)),
                     }
                 }
-                _ => return Json(format!("Invalid input: {}", get_name(&field))),
+                _ => {
+                    return Err(ApiError::invalid_input_error(format!(
+                        "unexpected text input => {}",
+                        get_name(&field)
+                    )))
+                }
             },
             _ => {
-                println!("type: {}", get_content_type(&field));
-                return Json("Invalid input".to_string());
+                return Err(ApiError::invalid_input_error(format!(
+                    "unexpected input type => {}",
+                    get_content_type(&field)
+                )))
             }
         }
     }
@@ -154,23 +161,25 @@ async fn create_movie(mut payload: Multipart, services: Data<Services>) -> Json<
         && matches!(&type_, Some(_value))
         && matches!(&categories, Some(_value))
     {
-        match services.get_movie_service().add(NewMovie {
-            uuid,
-            type_: type_.unwrap(),
-            titles: titles.unwrap(),
-            categories: categories.unwrap(),
-            age_restriction,
-        }) {
-            Ok(_) => return Json("200".to_string()),
-            Err(err) => return Json(err.to_string()),
-        }
+        services
+            .get_movie_service()
+            .add(NewMovie {
+                uuid,
+                type_: type_.unwrap(),
+                titles: titles.unwrap(),
+                categories: categories.unwrap(),
+                age_restriction,
+            })
+            .map_err(ApiError::db_error)?;
+        Ok(Json("upload complete".to_string()))
     } else {
         if fileupload {
-            match remove_file(format!("static/covers/{}.jpeg", &uuid)) {
-                Ok(_) => (),
-                Err(e) => return Json(format!("failed to cleanup cover for uuid {}  {}", uuid, e)),
-            }
+            remove_file(format!("static/covers/{}.jpeg", &uuid)).map_err(|err| ApiError {
+                message: Some(format!("failed to cleanup cover for uuid {}", uuid)),
+                cause: Some(err.to_string()),
+                err_type: ApiErrrorType::WriteError,
+            })?;
         }
-        return Json("Payload inclompleted".to_string());
+        return Err(ApiError::invalid_input_error("Payload inclompleted".to_string()));
     }
 }

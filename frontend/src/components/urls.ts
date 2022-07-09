@@ -5,4 +5,4 @@ const cover_location = '/covers/';
 const play = '/play/';
 const epi_data = '/epi_data/';
 const create_movie = '/create_movie/';
-export { url, file_location, play, epi_data , create_movie, cover_location};
+export { url, file_location, play, epi_data, create_movie, cover_location };
